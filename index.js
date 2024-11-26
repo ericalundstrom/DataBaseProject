@@ -41,7 +41,7 @@ app.get('/', (req, res) => {
         res.send(dbRes.rows); // Här används rätt res
     } else {
         console.log("fungerar ej", err);
-        res.status(500).send("Ett fel inträffade");
+        res.status(500).send("Ett fel inträffade igen");
     }
     client.end();
 });
