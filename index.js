@@ -4,7 +4,7 @@
 // const client = new Client ({
 //     user: 'an4297',
 //     password: 'p7d1r0dj',
-//     databse: 'Erica test',
+//     database: 'Erica test',
 //     host: 'pgserver.mah.se'
 // });
 
@@ -41,7 +41,7 @@ app.get('/students', (req, res) => {
     const client = new Client ({
         user: 'an4297',
         password: 'p7d1r0dj',
-        databse: 'Erica test',
+        database: 'Erica test',
         host: 'pgserver.mah.se'
     });
 
@@ -71,7 +71,7 @@ app.post('/add-student', async (req, res) => {
     const client = new Client({
         user: 'an4297',
         password: 'p7d1r0dj',
-        databse: 'Erica test',
+        database: 'Erica test',
         host: 'pgserver.mah.se'
     });
 
@@ -104,7 +104,7 @@ app.delete('/delete-student', async (req, res) => {
     const client = new Client({
         user: 'an4297',
         password: 'p7d1r0dj',
-        databse: 'Erica test',
+        database: 'Erica test',
         host: 'pgserver.mah.se'
     });
 
@@ -151,7 +151,7 @@ app.patch('/change-student', async (req,res) => {
     const client = new Client({
         user: 'an4297',
         password: 'p7d1r0dj',
-        databse: 'Erica test',
+        database: 'Erica test',
         host: 'pgserver.mah.se'
     });
 
