@@ -1,14 +1,6 @@
+const connectDatabase = require('./database');
 
-
-// const {Client} = require('pg');
-// const client = new Client ({
-//     user: 'an4297',
-//     password: 'p7d1r0dj',
-//     database: 'Erica test',
-//     host: 'pgserver.mah.se'
-// });
-
-// client.connect();
+// const client = await connectDatabase();
 
 // client.query("select * from student where student.f_name like 'T%'", (err, res) => {
 //     if(!err){
@@ -35,17 +27,8 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-
-app.get('/students', (req, res) => {
-    const {Client} = require('pg');
-    const client = new Client ({
-        user: 'an4297',
-        password: 'p7d1r0dj',
-        database: 'Erica test',
-        host: 'pgserver.mah.se'
-    });
-
-    client.connect();
+app.get('/students', async (req, res) => {
+    const client = await connectDatabase();
 
     client.query("SELECT * FROM student", (err, dbRes) => {
         if (!err) {
@@ -67,16 +50,9 @@ app.post('/add-student', async (req, res) => {
         return res.status(400).send("Alla fält är obligatoriska!");
     }
 
-    const {Client} = require('pg');
-    const client = new Client({
-        user: 'an4297',
-        password: 'p7d1r0dj',
-        database: 'Erica test',
-        host: 'pgserver.mah.se'
-    });
+    const client = await connectDatabase();
 
     try {
-        await client.connect();
 
         const newId = await generateUniqueId(client);
 
@@ -100,17 +76,9 @@ app.delete('/delete-student', async (req, res) => {
         return res.status(400).send("ID är obligatoriskt.");
     }
 
-    const {Client} = require('pg');
-    const client = new Client({
-        user: 'an4297',
-        password: 'p7d1r0dj',
-        database: 'Erica test',
-        host: 'pgserver.mah.se'
-    });
+    const client = await connectDatabase();
 
     try {
-        await client.connect();
-
         const query = 'DELETE FROM student WHERE id = $1';
         const values = [id];
 
@@ -147,17 +115,9 @@ app.patch('/change-student', async (req,res) => {
         return res.status(400).send("Både ID och förnamn är obligatoriska.");
     }
 
-    const {Client} = require('pg');
-    const client = new Client({
-        user: 'an4297',
-        password: 'p7d1r0dj',
-        database: 'Erica test',
-        host: 'pgserver.mah.se'
-    });
+    const client = await connectDatabase();
 
     try {
-        await client.connect();
-
         const query = 'UPDATE student SET f_name = $1 WHERE id = $2';
 
         const values = [f_name, id];
