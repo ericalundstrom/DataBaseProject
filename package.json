@@ -1,0 +1,19 @@
+{
+  "name": "conference_manager",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "license": "ISC",
+  "private": true,
+  "scripts": {
+    "devstart": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "multer": "^1.4.5-lts.1",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  }
+}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Management</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Registration Successful</h1>
+
+    <h2>Welcome, <%= data.first_name %> <%= data.last_name %>!</h2>
+    <p><strong>Email:</strong> <%= data.email %></p>
+    <p><strong>Phone:</strong> <%= data.phone %></p>
+    <p><strong>Affiliation:</strong> <%= data.affiliation %></p>
+    <p><strong>Role:</strong> <%= data.role %></p>
+
+    <h3>Your registration details:</h3>
+    <pre><%= JSON.stringify(data, null, 2) %></pre>
+</body>
+</html>
