@@ -36,6 +36,12 @@
         <input type="password" id="password" name="password" required><br><br>
 
         <button type="submit">Register</button>
+
+        <% if (errorMessage) { %>
+            <div class="error-message">
+                <p><%= errorMessage %></p>
+            </div>
+        <% } %>
     </form>
 </body>
 </html>

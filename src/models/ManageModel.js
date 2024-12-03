@@ -1,10 +1,23 @@
 const { connectDatabase } = require('../utils/database.js');
+const strings = require('../locales/strings.js');
 
 class ManageModel {
   static async register(first_name, last_name, email, phone, affiliation, role, password) {
     const client = await connectDatabase();
 
     try {
+      const existingUserQuery = 'SELECT * FROM users WHERE email = $1';
+      const existingUser = await client.query(existingUserQuery, [email]);
+
+      if (existingUser.rows.length > 0) {
+        throw new Error('userExists');
+      }
+
+      const phoneRegex = /^[0-9]+$/;
+      if (!phoneRegex.test(phone)) {
+        throw new Error('invalidPhone');
+      }
+
       const newId = await this.generateUniqueId(client);
 
       const query = 'INSERT INTO users (user_id, first_name, last_name, email, phone, affiliation, role, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
@@ -14,7 +27,7 @@ class ManageModel {
 
       return { first_name, last_name, email, phone, affiliation, role };
     } catch (error) {
-      throw new Error(error.message);
+      throw error;
     } finally {
       client.end();
     }

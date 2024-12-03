@@ -7,14 +7,31 @@ class ManageController {
       const { first_name, last_name, email, phone, affiliation, role, password } = req.body;
 
       if (!first_name || !last_name || !email || !phone || !affiliation || !role || !password) {
-        return res.status(400).send(strings.errorMessages.fieldsAreMandatory);
+        throw new Error('fieldsAreMandatory');
       }
 
-      const data = await ManageModel.register(first_name, last_name, email, phone, affiliation, role, password);
+      await ManageModel.register(first_name, last_name, email, phone, affiliation, role, password);
 
-      res.render('welcome', { data });
+      res.render('index', { successMessage: 'User registered successfully!' });
     } catch (error) {
-      res.status(500).json(error.message);
+      let errorMessage;
+
+      switch (error.message) {
+        case 'fieldsAreMandatory':
+          errorMessage = strings.errorMessages.fieldsAreMandatory;
+          break;
+        case 'userExists':
+          errorMessage = strings.errorMessages.userExists;
+          break;
+        case 'invalidPhone':
+          errorMessage = strings.errorMessages.invalidPhone;
+          break;
+        default:
+          errorMessage = strings.errorMessages.databaseError;
+          break;
+      }
+
+      res.render('index', { errorMessage });
     }
   }
 }

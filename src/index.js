@@ -23,7 +23,7 @@ const upload = multer({ storage: storage });
 app.use(upload.none());
 
 app.get('/', (req, res) => {
-  res.render('index');
+  res.render('index', { successMessage: null, errorMessage: null });
 });
 
 app.use('/manage', manageRoutes);
