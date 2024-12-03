@@ -1,9 +1,10 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const path = require('path');
+const bodyParser = require('body-parser');
 const multer = require('multer');
-const manageRoutes = require('./routes/manageRoutes.js');
 const { ErrorController } = require('./controllers/errorController.js');
+const viewRoutes = require('./routes/views/index.js');
+const manageRoutes = require('./routes/api/manageRoutes.js');
 
 const port = 4000;
 const app = express();
@@ -22,10 +23,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 app.use(upload.none());
 
-app.get('/', (req, res) => {
-  res.render('index', { successMessage: null, errorMessage: null });
-});
-
+app.use('/', viewRoutes);
 app.use('/manage', manageRoutes);
 app.use(ErrorController.get404);
 
