@@ -12,7 +12,7 @@ class ManageController {
 
       await ManageModel.register(first_name, last_name, email, phone, affiliation, role, password);
 
-      res.render('index', { successMessage: 'User registered successfully!' });
+      res.render('index', { successMessage: 'User registered successfully!', errorMessage: null });
     } catch (error) {
       let errorMessage;
 
@@ -31,7 +31,7 @@ class ManageController {
           break;
       }
 
-      res.render('index', { errorMessage });
+      res.render('index', { successMessage: null, errorMessage });
     }
   }
 }
