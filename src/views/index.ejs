@@ -37,11 +37,37 @@
 
         <button type="submit">Register</button>
 
-        <% if (errorMessage) { %>
-            <div class="error-message">
-                <p><%= errorMessage %></p>
+        <% if (errorMessage || successMessage) { %>
+            <div class="auth-message <%= errorMessage ? 'error-message' : 'success-message' %>"
+                <p><%= errorMessage || successMessage %></p>
             </div>
         <% } %>
+
     </form>
+
+    <div class="login-button-on-register-page">
+        <p>Already have an account?</p>
+        <a href="/login">
+            <button type="button" class="login-button">Login</button>
+        </a>
+    </div>
+
+    <script>
+        const authMessage = document.querySelector('.auth-message');
+
+        if (authMessage) {
+            setTimeout(() => {
+                authMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        const loginButton = document.querySelector('.login-button');
+
+        if (loginButton) {
+            loginButton.addEventListener('click', function() {
+                window.location.href = '/login';
+            });
+        }
+    </script>
 </body>
 </html>
