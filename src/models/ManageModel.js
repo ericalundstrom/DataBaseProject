@@ -33,6 +33,27 @@ class ManageModel {
     }
   }
 
+  static async login(email) {
+    const client = await connectDatabase();
+
+    try {
+      const query = 'SELECT user_id, first_name, last_name, email, phone, affiliation, role, password FROM users WHERE email = $1';
+      const values = [email];
+
+      const result = await client.query(query, values);
+
+      if (result.rows.length > 0) {
+        return result.rows[0];
+      }
+
+      return null;
+    } catch (error) {
+      throw error;
+    } finally {
+      client.end();
+    }
+  }
+
   static async generateUniqueId(client) {
     try {
       const result = await client.query('SELECT MAX(user_id) AS max_id FROM users');

@@ -4,3 +4,10 @@
   font-size: 14px;
   font-weight: bold;
 }
+
+.login-button-on-register-page, .register-button-on-login-page {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 50px;
+}

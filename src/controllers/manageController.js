@@ -34,6 +34,30 @@ class ManageController {
       res.render('index', { successMessage: null, errorMessage });
     }
   }
+
+  static async login(req, res) {
+    try {
+      const { email, password } = req.body;
+
+      if (!email || !password) {
+        return res.status(400).send(strings.errorMessages.fieldsAreMandatory);
+      }
+
+      const user = await ManageModel.login(email);
+
+      if (!user) {
+        return res.status(401).send("The user does not exist.");
+      }
+
+      if (user.password !== password) {
+        return res.status(401).send("Invalid password.");
+      }
+
+      res.render('welcome', { user });
+    } catch (error) {
+      res.status(500).json(error.message);
+    }
+  }
 }
 
 module.exports = { ManageController };
