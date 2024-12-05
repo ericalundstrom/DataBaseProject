@@ -53,7 +53,13 @@ class ManageController {
         return res.status(401).send("Invalid password.");
       }
 
-      res.render('welcome', { user });
+      if (user.role == 'admin') {
+        res.render('welcomeAdmin', { user });
+      } else if (user.role == 'author') {
+        res.render('welcomeAuthor', { user });
+      } else if (user.role == 'reviewer') {
+        res.render('welcomeReviewer', { user });
+      }
     } catch (error) {
       res.status(500).json(error.message);
     }

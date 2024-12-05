@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Management</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Login Successful</h1>
+
+    <h2>Welcome reviewer, <%= user.first_name %> <%= user.last_name %>!</h2>
+
+    <a href="/">
+        <button type="button" class="logout-button">Logout</button>
+    </a>
+
+    <script>
+        const logoutButton = document.querySelector('.logout-button');
+
+        if (logoutButton) {
+            logoutButton.addEventListener('click', function() {
+                window.location.href = '/';
+            });
+        }
+    </script>
+</body>
+</html>
