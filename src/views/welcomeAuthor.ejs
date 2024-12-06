@@ -7,13 +7,22 @@
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-    <h1>Login Successful</h1>
+    <h1>Welcome author, <%= user.first_name %> <%= user.last_name %>!</h1>
+    <p>Click on different buttons to see different views.</p>
 
-    <h2>Welcome author, <%= user.first_name %> <%= user.last_name %>!</h2>
+    <div class="button-container">
+        <a href="/author/create-article">
+          <button type="button" class="create-article">Create article</button>
+        </a>
 
-    <a href="/">
-        <button type="button" class="logout-button">Logout</button>
-    </a>
+        <a href="/">
+          <button type="button" class="submitted-article">Submitted article</button>
+        </a>
+
+        <a href="/">
+          <button type="button" class="logout-button">Logout</button>
+        </a>
+    </div>
 
     <script>
         const logoutButton = document.querySelector('.logout-button');

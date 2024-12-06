@@ -9,4 +9,12 @@ router.get('/login', (req, res) => {
   res.render('login');
 });
 
+router.get('/author/create-article', (req, res) => {
+  res.render('createArticle');
+});
+
+router.get('/author/submitted-article', (req, res) => {
+  res.render('submittedArticle');
+});
+
 module.exports = router;
