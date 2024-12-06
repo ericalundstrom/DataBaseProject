@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Management - Create Article</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <h1>Create Article</h1>
+
+    <p>Please simply fill in the form below and click the "Submit" button to submit the article.</p>
+
+
+    <form action="/author/create-article" method="POST">
+        <div>
+            <label for="articleType">Article Type:</label>
+            <select id="articleType" name="articleType" required>
+                <option value="short-article">short article</option>
+                <option value="full-article">full article</option>
+                <option value="poster">poster</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="title">Title of the Article:</label>
+            <input type="text" id="title" name="title" required maxlength="255">
+        </div>
+
+        <div>
+            <label for="keywords">Keywords (up to 4 words, comma-separated):</label>
+            <input type="text" id="keywords" name="keywords" required maxlength="255">
+        </div>
+
+        <div>
+            <label for="articleText">Text of the Article (max 1,000,000,000 characters):</label>
+            <textarea id="article-text" name="articleText" required maxlength="1000000000"></textarea>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <a href="/author/welcome-author">
+        <button type="button" class="go-home">Homepage</button>
+    </a>
+
+    <script> </script>
+</body>
+</html>
