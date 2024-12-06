@@ -3,6 +3,6 @@ const { AuthorController } = require('../../controllers/authorController.js');
 
 const router = express.Router();
 
-router.post('/createArticle', AuthorController.createArticle);
+router.post('/create-article', AuthorController.createArticle);
 
 module.exports = router;
