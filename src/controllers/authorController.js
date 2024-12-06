@@ -3,7 +3,7 @@ const strings = require('../locales/strings.js');
 
 class AuthorController {
   static async createArticle(req, res) {
-
+      req.session.user = user;
   }
 }
 

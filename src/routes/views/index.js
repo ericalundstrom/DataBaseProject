@@ -9,8 +9,24 @@ router.get('/login', (req, res) => {
   res.render('login');
 });
 
+router.get('/author/welcome-author', (req, res) => {
+  const user = req.session.user;
+
+  if (!user) {
+    return res.redirect('/login');
+  }
+
+  res.render('welcomeAuthor', { user });
+});
+
 router.get('/author/create-article', (req, res) => {
-  res.render('createArticle');
+  const user = req.session.user;
+
+  if (!user) {
+    return res.redirect('/login');
+  }
+
+  res.render('createArticle', { user });
 });
 
 router.get('/author/submitted-article', (req, res) => {
