@@ -55,12 +55,15 @@ class ManageController {
 
       req.session.user = user;
 
-      if (user.role === 'admin') {
-        return res.redirect('/admin/welcome-admin');
-      } else if (user.role === 'author') {
-        return res.redirect('/author/welcome-author');
-      } else if (user.role === 'reviewer') {
-        return res.redirect('/reviewer/welcome-reviewer');
+      switch (user.role) {
+        case 'admin':
+          return res.redirect('/admin/welcome-admin');
+        case 'author':
+          return res.redirect('/author/welcome-author');
+        case 'reviewer':
+          return res.redirect('/reviewer/welcome-reviewer');
+        default:
+          return res.status(403).send('Unauthorized role');
       }
     } catch (error) {
       let errorMessage;
