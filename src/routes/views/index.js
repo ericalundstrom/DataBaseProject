@@ -34,7 +34,20 @@ router.get('/author/create-article', (req, res) => {
 });
 
 router.get('/author/submitted-article', (req, res) => {
-  res.render('submittedArticle');
+  const user = req.session.user;
+
+  if (!user) {
+    return res.redirect('/login');
+  }
+
+  res.render('submittedArticle', {
+    user,
+    articles: [],
+    availableYears: [],
+    selectedYear: null,
+    successMessage: null,
+    errorMessage: null
+  });
 });
 
 module.exports = router;

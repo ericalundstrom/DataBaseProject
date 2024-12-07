@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conference Management - Submitted Articles</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/submitted-articles.js" defer></script>
+</head>
+<body>
+  <h1>Your Submitted Articles</h1>
+
+  <p>Here you can browse your submitted articles across all years.</p>
+
+  <form method="POST" action="/author/submitted-article" id="yearFilterForm">
+    <select name="year" id="year" onchange="this.form.submit()">
+        <%
+          const currentYear = new Date().getFullYear();
+          const yearsToDisplay = [];
+          for (let year = 2022; year <= currentYear; year++) {
+            yearsToDisplay.push(year);
+          }
+        %>
+        <option value="">Please select a year</option>
+        <% yearsToDisplay.forEach(function(year) { %>
+          <option value="<%= year %>" <%= year === parseInt(selectedYear) ? 'selected' : '' %>><%= year %></option>
+        <% }); %>
+      </select>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Article Type</th>
+        <th>Keywords</th>
+        <th>Status</th>
+        <th>Submission Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% articles.forEach(function(article) { %>
+        <tr>
+          <td>
+            <a href="#" class="article-title"
+               data-title="<%= article.title %>"
+               data-content="<%= article.content %>">
+              <%= article.title %>
+            </a>
+          </td>
+          <td><%= article.article_type %></td>
+          <td><%= article.keywords %></td>
+          <td><%= article.article_status %></td>
+          <td><%= article.submission_date.toLocaleDateString() %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <a href="/author/welcome-author">
+    <button type="button" class="go-home">Homepage</button>
+  </a>
+
+  <div id="article-modal">
+    <div class="modal-content">
+      <span class="modal-close" id="closeModal">&times;</span>
+      <div class="modal-header" id="modalTitle"></div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -68,6 +68,46 @@ class AuthorController {
       res.render('createArticle', { successMessage: null, errorMessage });
     }
   }
+
+  static async submittedArticle(req, res) {
+    try {
+      const user = req.session.user;
+
+      if (!user || !user.user_id) {
+        throw new Error('unauthorized');
+      }
+
+      const author_id = user.user_id;
+      const { year } = req.body;
+      const currentYear = new Date().getFullYear();
+      const selectedYear = year || currentYear;
+
+      const articles = await AuthorModel.getArticlesByAuthorAndYear(author_id, selectedYear);
+
+      const yearsToDisplay = [];
+      for (let year = 2022; year <= currentYear; year++) {
+        yearsToDisplay.push(year);
+      }
+
+      res.render('submittedArticle', {
+        articles,
+        availableYears: yearsToDisplay,
+        selectedYear,
+        successMessage: null,
+        errorMessage: null,
+      });
+    } catch (error) {
+      let errorMessage = strings.errorMessages.databaseError;
+      res.render('submittedArticle', {
+        articles: [],
+        availableYears: [],
+        selectedYear: null,
+        successMessage: null,
+        errorMessage
+      });
+    }
+  }
+
 }
 
 module.exports = { AuthorController };
