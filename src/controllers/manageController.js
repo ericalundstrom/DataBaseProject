@@ -40,17 +40,17 @@ class ManageController {
       const { email, password } = req.body;
 
       if (!email || !password) {
-        return res.status(400).send(strings.errorMessages.fieldsAreMandatory);
+        throw new Error('fieldsAreMandatory');
       }
 
       const user = await ManageModel.login(email);
 
       if (!user) {
-        return res.status(401).send("The user does not exist.");
+        throw new Error('userNotFound');
       }
 
       if (user.password !== password) {
-        return res.status(401).send("Invalid password.");
+        throw new Error('invalidPassword');
       }
 
       req.session.user = user;
@@ -63,7 +63,24 @@ class ManageController {
         return res.redirect('/reviewer/welcome-reviewer');
       }
     } catch (error) {
-      res.status(500).json(error.message);
+      let errorMessage;
+
+      switch (error.message) {
+        case 'fieldsAreMandatory':
+          errorMessage = strings.errorMessages.fieldsAreMandatory;
+          break;
+        case 'userNotFound':
+          errorMessage = strings.errorMessages.userNotFound;
+          break;
+        case 'invalidPassword':
+          errorMessage = strings.errorMessages.invalidPassword;
+          break;
+        default:
+          errorMessage = strings.errorMessages.databaseError;
+          break;
+      }
+
+      res.render('login', { successMessage: null, errorMessage });
     }
   }
 }

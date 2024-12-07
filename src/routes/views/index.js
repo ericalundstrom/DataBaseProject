@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-  res.render('login');
+  res.render('login', { successMessage: null, errorMessage: null });
 });
 
 router.get('/author/welcome-author', (req, res) => {

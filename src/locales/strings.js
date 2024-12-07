@@ -5,10 +5,12 @@ const strings = {
     invalidArticleType: "Invalid article type.",
     invalidArticleStatus: "Invalid article status.",
     invalidCredentials: "Invalid email or password.",
+    invalidPassword: "Invalid password.",
     invalidPhone: "Phone number must consist of numbers only.",
     moreThanFourKeywords: "You can only have up to 4 keywords.",
     requestedResourceNotFound: "The requested resource was not found.",
     userExists: "This email is already registered.",
+    userNotFound: "User does not exist.",
     unauthorized: "Unauthorized access.",
   },
   successMessages: {

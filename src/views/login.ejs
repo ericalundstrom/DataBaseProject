@@ -18,8 +18,13 @@
         <input type="password" id="password" name="password" required><br><br>
 
         <button type="submit">Login</button>
-
     </form>
+
+    <% if (errorMessage || successMessage) { %>
+        <div class="auth-message <%= errorMessage ? 'error-message' : 'success-message' %>"
+            <p><%= errorMessage || successMessage %></p>
+        </div>
+    <% } %>
 
     <div class="register-button-on-login-page">
       <p>Don't have an account yet?</p>
