@@ -50,4 +50,15 @@ router.get('/author/submitted-article', (req, res) => {
   });
 });
 
+router.get('/reviewer/welcome-reviewer', (req, res) => {
+  const user = req.session.user;
+
+  if (!user) {
+    return res.redirect('/login');
+  }
+
+  res.render('welcomeReviewer', { user });
+});
+
 module.exports = router;
+
