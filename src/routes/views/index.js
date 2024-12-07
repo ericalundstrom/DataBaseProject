@@ -26,7 +26,11 @@ router.get('/author/create-article', (req, res) => {
     return res.redirect('/login');
   }
 
-  res.render('createArticle', { user });
+  res.render('createArticle', {
+    user,
+    successMessage: null,
+    errorMessage: null
+  });
 });
 
 router.get('/author/submitted-article', (req, res) => {
