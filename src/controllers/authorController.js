@@ -41,7 +41,12 @@ class AuthorController {
 
       await AuthorModel.createArticle(author_id, title, article_type, sanitizedKeywords, article_status, content, submission_date);
 
-      res.render('createArticle', { successMessage: strings.successMessages.articleSubmitted, errorMessage: null });
+      res.render('createArticle', {
+        successMessage: strings.successMessages.articleSubmitted,
+        errorMessage: null,
+        submissionStartDate: null,
+        submissionEndDate: null,
+      });
     } catch (error) {
       let errorMessage;
 
@@ -66,7 +71,12 @@ class AuthorController {
           break;
       }
 
-      res.render('createArticle', { successMessage: null, errorMessage });
+      res.render('createArticle', {
+        successMessage: null,
+        errorMessage,
+        submissionStartDate: null,
+        submissionEndDate: null,
+      });
     }
   }
 
