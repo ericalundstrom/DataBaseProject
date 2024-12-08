@@ -32,6 +32,29 @@ class AuthorModel {
       throw new Error('Could not generate a unique article ID');
     }
   }
+
+  static async getArticlesByAuthorAndYear(author_id, year) {
+    const client = await connectDatabase();
+
+    try {
+      const query = `
+        SELECT *
+        FROM articles
+        WHERE author_id = $1 AND year = $2
+        ORDER BY submission_date DESC;
+      `;
+
+      const values = [author_id, year];
+
+      const result = await client.query(query, values);
+
+      return result.rows;
+    } catch (error) {
+      throw new Error('Error fetching articles by year');
+    } finally {
+      client.end();
+    }
+  }
 }
 
 module.exports = { AuthorModel };

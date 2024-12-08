@@ -34,7 +34,30 @@ router.get('/author/create-article', (req, res) => {
 });
 
 router.get('/author/submitted-article', (req, res) => {
-  res.render('submittedArticle');
+  const user = req.session.user;
+
+  if (!user) {
+    return res.redirect('/login');
+  }
+
+  res.render('submittedArticle', {
+    user,
+    articles: [],
+    availableYears: [],
+    selectedYear: null,
+    successMessage: null,
+    errorMessage: null
+  });
+});
+
+router.get('/reviewer/welcome-reviewer', (req, res) => {
+  const user = req.session.user;
+
+  if (!user) {
+    return res.redirect('/login');
+  }
+
+  res.render('welcomeReviewer', { user });
 });
 
 router.get('/admin/welcome-admin', (req, res) => {
@@ -72,3 +95,4 @@ router.get('/admin/delete-submission', (req, res) => {
 });
 
 module.exports = router;
+
