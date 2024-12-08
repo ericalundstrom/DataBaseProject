@@ -84,10 +84,10 @@ router.get('/admin/create-submission', (req, res) => {
   })
 });
 
-router.get('/admin/delete-submission', (req, res) => {
+router.get('/admin/edit-submission', (req, res) => {
   const user = req.session.user;
   
-  res.render('deleteSubmission', {
+  res.render('editSubmission', {
     user,
     successMessage: null,
     errorMessage: null
