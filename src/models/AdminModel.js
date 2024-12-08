@@ -51,6 +51,26 @@ class AdminModel {
         }
     }
 
+    static async getActiveSubmissionPeriod() {
+        const client = await connectDatabase();
+
+        try {
+            const query = `
+                SELECT start_date, end_date
+                FROM submissionperiods
+                WHERE start_date <= CURRENT_DATE AND end_date >= CURRENT_DATE;
+            `;
+
+            const result = await client.query(query);
+
+            return result.rows[0] || null;
+        } catch (error) {
+            console.error('Error fetching active submission period:', error);
+            throw new Error('Could not fetch active submission period');
+        } finally {
+            client.end();
+        }
+    }
 }
 
 module.exports = { AdminModel };

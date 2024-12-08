@@ -1,4 +1,5 @@
 const { AuthorModel } = require('../models/AuthorModel.js');
+const { AdminModel } = require('../models/AdminModel.js');
 const strings = require('../locales/strings.js');
 
 class AuthorController {
@@ -108,6 +109,42 @@ class AuthorController {
     }
   }
 
+  static async getSubmissionPeriod(req, res) {
+    try {
+      const user = req.session.user;
+
+      if (!user || !user.user_id) {
+        throw new Error('unauthorized');
+      }
+
+      const submissionPeriod = await AdminModel.getActiveSubmissionPeriod();
+
+      function formatDate(date) {
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+
+      const submissionStartDate = submissionPeriod?.start_date ? formatDate(submissionPeriod.start_date) : null;
+      const submissionEndDate = submissionPeriod?.end_date ? formatDate(submissionPeriod.end_date) : null;
+
+      return { submissionStartDate, submissionEndDate };
+    } catch (error) {
+      let errorMessage;
+
+      switch (error.message) {
+        case 'noActiveSubmissionPeriod':
+          errorMessage = strings.errorMessages.noActiveSubmissionPeriod;
+          break;
+        default:
+          errorMessage = strings.errorMessages.databaseError;
+          break;
+      }
+      return { submissionStartDate: null, submissionEndDate: null };
+    }
+  }
 }
 
 module.exports = { AuthorController };
