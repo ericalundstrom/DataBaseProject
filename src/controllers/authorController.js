@@ -117,7 +117,7 @@ class AuthorController {
         throw new Error('unauthorized');
       }
 
-      const submissionPeriod = await AdminModel.getActiveSubmissionPeriod();
+      const submissionPeriod = await AdminModel.getLatestSubmissionPeriod();
 
       function formatDate(date) {
         const d = new Date(date);

@@ -51,14 +51,16 @@ class AdminModel {
         }
     }
 
-    static async getActiveSubmissionPeriod() {
+    static async getLatestSubmissionPeriod() {
         const client = await connectDatabase();
 
         try {
             const query = `
-                SELECT start_date, end_date
+                SELECT start_date, end_date, year
                 FROM submissionperiods
-                WHERE start_date <= CURRENT_DATE AND end_date >= CURRENT_DATE;
+                WHERE EXTRACT(YEAR FROM start_date) = EXTRACT(YEAR FROM CURRENT_DATE)
+                ORDER BY start_date DESC
+                LIMIT 1;
             `;
 
             const result = await client.query(query);
