@@ -17,6 +17,16 @@ class AuthorController {
         throw new Error('fieldsAreMandatory');
       }
 
+      const { submissionStartDate, submissionEndDate } = await AuthorController.getSubmissionPeriod(req, res);
+
+      const currentDate = new Date();
+      const startDate = new Date(submissionStartDate);
+      const endDate = new Date(submissionEndDate);
+
+      if (currentDate < startDate || currentDate > endDate) {
+        throw new Error('submissionOutOfPeriod');
+      }
+
       const validArticleTypes = ['short article', 'full article', 'poster'];
       const validArticleStatuses = ['submitted', 'under review', 'accepted', 'rejected'];
       const article_status = 'submitted';
@@ -65,6 +75,9 @@ class AuthorController {
           break;
         case 'moreThanFourKeywords':
           errorMessage = strings.errorMessages.moreThanFourKeywords;
+          break;
+        case 'submissionOutOfPeriod':
+          errorMessage = strings.errorMessages.submissionOutOfPeriod;
           break;
         default:
           errorMessage = strings.errorMessages.databaseError;
@@ -144,7 +157,7 @@ class AuthorController {
     } catch (error) {
       let errorMessage;
 
-      switch (error.message) {
+      switch (errorMessage) {
         case 'noActiveSubmissionPeriod':
           errorMessage = strings.errorMessages.noActiveSubmissionPeriod;
           break;

@@ -14,6 +14,7 @@ const strings = {
     userNotFound: "User does not exist.",
     unauthorized: "Unauthorized access.",
     submissionExistsForYear: "Can't create two submission period for one year",
+    submissionOutOfPeriod: "The submission period has ended or has not started yet. Please try in the next submission period.",
     datesMustBeInSameYear: "Can't create a submission period with different years"
   },
   successMessages: {
