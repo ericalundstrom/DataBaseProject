@@ -37,4 +37,38 @@ router.get('/author/submitted-article', (req, res) => {
   res.render('submittedArticle');
 });
 
+router.get('/admin/welcome-admin', (req, res) => {
+  const user = req.session.user;
+
+  if (!user) {
+    return res.redirect('/login');
+  }
+
+  res.render('welcomeAdmin', { user });
+});
+
+router.get('/admin/assign-reviewer', (req, res) => {
+  res.render('assignReviewer');
+});
+
+router.get('/admin/create-submission', (req, res) => {
+  const user = req.session.user;
+
+  res.render('createSubmission', {
+    user,
+    successMessage: null,
+    errorMessage: null
+  })
+});
+
+router.get('/admin/delete-submission', (req, res) => {
+  const user = req.session.user;
+  
+  res.render('deleteSubmission', {
+    user,
+    successMessage: null,
+    errorMessage: null
+  })
+});
+
 module.exports = router;

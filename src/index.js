@@ -7,6 +7,7 @@ const { ErrorController } = require('./controllers/errorController.js');
 const viewRoutes = require('./routes/views/index.js');
 const manageRoutes = require('./routes/api/manageRoutes.js');
 const authorRoutes = require('./routes/api/authorRoutes.js');
+const adminRoutes = require('./routes/api/adminRoutes.js');
 
 const port = 4000;
 const app = express();
@@ -34,6 +35,7 @@ app.use(session({
 app.use('/', viewRoutes);
 app.use('/manage', manageRoutes);
 app.use('/author', authorRoutes);
+app.use('/admin', adminRoutes);
 app.use(ErrorController.get404);
 
 app.listen(port, () => {

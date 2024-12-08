@@ -11,6 +11,20 @@
 
     <h2>Welcome admin, <%= user.first_name %> <%= user.last_name %>!</h2>
 
+    <div class="button-container">
+        <a href="/admin/create-submission">
+          <button type="button" class="create-submission">Create submission time</button>
+        </a>
+
+        <a href="/admin/delete-submission">
+            <button type="button" class="delete submission">Delete submission</button>
+          </a>
+
+        <a href="/admin/assign-reviewer">
+            <button type="button" class="assign reviewer">Assign reviewer</button>
+          </a>
+    </div>
+
     <a href="/">
         <button type="button" class="logout-button">Logout</button>
     </a>

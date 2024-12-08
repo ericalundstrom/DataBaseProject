@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocumConference Management - Create Submission</title>
+    <script src="/create-submission.js" defer></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+</head>
+<body>
+
+    <div>
+        <h1>Skapa Submission Period</h1>
+    
+        <form action="/admin/create-submission" method="POST">
+    
+          <div>
+            <label for="startDate">Startdatum:</label>
+            <input
+              type="text"
+              id="startDate"
+              name="start_date"
+              required
+            />
+          </div>
+    
+          <div>
+            <label for="endDate">Slutdatum:</label>
+            <input
+              type="text"
+              id="endDate"
+              name="end_date"
+              required
+            />
+          </div>
+    
+          <button type="submit">Skapa Submission Period</button>
+        </form>
+    
+      </div>
+    
+
+    <a href="/admin/welcome-admin">
+        <button type="button" class="go-home">Homepage</button>
+    </a>
+    
+      <!-- Lägg till Flatpickr och initiera kalendrarna -->
+      <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+      <script>
+        // Initialisera Flatpickr för start- och slutdatum
+        flatpickr("#startDate", {
+          dateFormat: "Y-m-d"
+        });
+    
+        flatpickr("#endDate", {
+          dateFormat: "Y-m-d"
+        });
+      </script>
+
+<% if (errorMessage || successMessage) { %>
+    <div class="auth-message <%= errorMessage ? 'error-message' : 'success-message' %>"
+        <p><%= errorMessage || successMessage %></p>
+    </div>
+<% } %>
+</body>
+</html>

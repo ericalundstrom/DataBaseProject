@@ -12,10 +12,13 @@ const strings = {
     userExists: "This email is already registered.",
     userNotFound: "User does not exist.",
     unauthorized: "Unauthorized access.",
+    submissionExistsForYear: "Can't create two submission period for one year",
+    datesMustBeInSameYear: "Can't create a submission period with different years"
   },
   successMessages: {
     userRegistered: "User registered successfully!",
     articleSubmitted: "Article submitted successfully!",
+    submissionCreated: "Submission time created successfully!"
   },
 };
 
