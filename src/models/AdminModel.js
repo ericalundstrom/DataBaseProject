@@ -35,12 +35,11 @@ class AdminModel {
           const result = await client.query(query);
           return result.rows;
         } catch (error) {
-            throw error;
+            throw new Error('Error fetching articles');
         } finally {
             client.end();
         }
     }
-      
 
       static async getLatestSubmissionPeriod() {
         const client = await connectDatabase();
@@ -75,7 +74,7 @@ class AdminModel {
           console.error('Error at generating ID:', error);
           throw new Error('Could not generate a unique article ID');
         }
-      
+
     }
 
 }

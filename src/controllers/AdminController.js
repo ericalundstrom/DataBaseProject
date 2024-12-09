@@ -18,7 +18,7 @@ class AdminController {
         throw new Error('datesMustBeInSameYear');
       }
 
-      const year = startYear; 
+      const year = startYear;
 
       await AdminModel.createSubmission(start_date, end_date, year);
 
@@ -58,14 +58,18 @@ class AdminController {
 
       const articles = await AdminModel.getArticles();
 
-      return articles;
-      
-    }catch (error) {
+      res.render('assignReviewer', {
+        articles,
+        successMessage: null,
+        errorMessage: null
+      });
+    } catch (error) {
       let errorMessage = strings.errorMessages.databaseError;
-      if (error.message === 'Unauthorized') {
-        errorMessage = 'Du måste vara inloggad för att visa artiklar.';
-      }
-      return errorMessage;
+      res.render('assignReviewer', {
+        articles: [],
+        successMessage: null,
+        errorMessage
+      });
     }
   }
 }

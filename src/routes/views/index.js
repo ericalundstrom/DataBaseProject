@@ -90,12 +90,19 @@ router.get('/admin/welcome-admin', (req, res) => {
   res.render('welcomeAdmin', { user });
 });
 
-router.get('/admin/assign-reviewer', (req, res) => {
-  res.render('assignReviewer',{
-      articles: [],
-      successMessage: null,
-      errorMessage:null 
-    });
+router.get('/reviewer/assign-reviewer', (req, res) => {
+  const user = req.session.user;
+
+  if (!user) {
+    return res.redirect('/login');
+  }
+
+  res.render('assignReviewer', {
+    user,
+    articles,
+    successMessage: null,
+    errorMessage: null
+   });
 });
 
 router.get('/admin/create-submission', (req, res) => {
