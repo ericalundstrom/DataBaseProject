@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { AuthorController } = require('../../controllers/authorController.js');
 
 router.get('/', (req, res) => {
   res.render('index', { successMessage: null, errorMessage: null });
@@ -26,10 +27,29 @@ router.get('/author/create-article', (req, res) => {
     return res.redirect('/login');
   }
 
-  res.render('createArticle', {
-    user,
-    successMessage: null,
-    errorMessage: null
+  AuthorController.getSubmissionPeriod(req, res)
+  .then(({ submissionStartDate, submissionEndDate }) => {
+    res.render('createArticle', {
+      user,
+      successMessage: null,
+      errorMessage: null,
+      submissionStartDate,
+      submissionEndDate,
+    });
+  })
+  .catch((error) => {
+    let errorMessage;
+
+    if (error.message === 'unauthorized') {
+      errorMessage = 'You must be logged in to access this page.';
+    } else if (error.message === 'noActiveSubmissionPeriod') {
+      errorMessage = 'No active submission period found.';
+    }
+    res.render('createArticle', {
+      user,
+      successMessage: null,
+      errorMessage: 'Error fetching submission period'
+    });
   });
 });
 

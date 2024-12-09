@@ -12,6 +12,10 @@
 
     <p>Please simply fill in the form below and click the "Submit" button to submit the article.</p>
 
+    <% if (submissionStartDate && submissionEndDate) { %>
+        <p class="submission-date">You can only submit article from <%= submissionStartDate %> to <%= submissionEndDate %>.</p>
+    <% } %>
+
     <form action="/author/create-article" method="POST">
         <div>
             <label for="articleType">Article Type:</label>

@@ -1,4 +1,5 @@
 const { AuthorModel } = require('../models/AuthorModel.js');
+const { AdminModel } = require('../models/AdminModel.js');
 const strings = require('../locales/strings.js');
 
 class AuthorController {
@@ -14,6 +15,16 @@ class AuthorController {
 
       if (!title || !article_type || !keywords || !content) {
         throw new Error('fieldsAreMandatory');
+      }
+
+      const { submissionStartDate, submissionEndDate } = await AuthorController.getSubmissionPeriod(req, res);
+
+      const currentDate = new Date();
+      const startDate = new Date(submissionStartDate);
+      const endDate = new Date(submissionEndDate);
+
+      if (currentDate < startDate || currentDate > endDate) {
+        throw new Error('submissionOutOfPeriod');
       }
 
       const validArticleTypes = ['short article', 'full article', 'poster'];
@@ -40,7 +51,12 @@ class AuthorController {
 
       await AuthorModel.createArticle(author_id, title, article_type, sanitizedKeywords, article_status, content, submission_date);
 
-      res.render('createArticle', { successMessage: strings.successMessages.articleSubmitted, errorMessage: null });
+      res.render('createArticle', {
+        successMessage: strings.successMessages.articleSubmitted,
+        errorMessage: null,
+        submissionStartDate: null,
+        submissionEndDate: null,
+      });
     } catch (error) {
       let errorMessage;
 
@@ -60,12 +76,20 @@ class AuthorController {
         case 'moreThanFourKeywords':
           errorMessage = strings.errorMessages.moreThanFourKeywords;
           break;
+        case 'submissionOutOfPeriod':
+          errorMessage = strings.errorMessages.submissionOutOfPeriod;
+          break;
         default:
           errorMessage = strings.errorMessages.databaseError;
           break;
       }
 
-      res.render('createArticle', { successMessage: null, errorMessage });
+      res.render('createArticle', {
+        successMessage: null,
+        errorMessage,
+        submissionStartDate: null,
+        submissionEndDate: null,
+      });
     }
   }
 
@@ -108,6 +132,42 @@ class AuthorController {
     }
   }
 
+  static async getSubmissionPeriod(req, res) {
+    try {
+      const user = req.session.user;
+
+      if (!user || !user.user_id) {
+        throw new Error('unauthorized');
+      }
+
+      const submissionPeriod = await AdminModel.getLatestSubmissionPeriod();
+
+      function formatDate(date) {
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+
+      const submissionStartDate = submissionPeriod?.start_date ? formatDate(submissionPeriod.start_date) : null;
+      const submissionEndDate = submissionPeriod?.end_date ? formatDate(submissionPeriod.end_date) : null;
+
+      return { submissionStartDate, submissionEndDate };
+    } catch (error) {
+      let errorMessage;
+
+      switch (errorMessage) {
+        case 'noActiveSubmissionPeriod':
+          errorMessage = strings.errorMessages.noActiveSubmissionPeriod;
+          break;
+        default:
+          errorMessage = strings.errorMessages.databaseError;
+          break;
+      }
+      return { submissionStartDate: null, submissionEndDate: null };
+    }
+  }
 }
 
 module.exports = { AuthorController };
