@@ -65,13 +65,7 @@ class AdminController {
       if (error.message === 'Unauthorized') {
         errorMessage = 'Du måste vara inloggad för att visa artiklar.';
       }
-  
-      // Rendera vyn med tomma artiklar och ett felmeddelande
-      res.render('submittedArticle', {
-        articles: [],
-        successMessage: null,
-        errorMessage,
-      });
+      return errorMessage;
     }
   }
 }

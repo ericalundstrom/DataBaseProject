@@ -39,7 +39,7 @@ class AdminModel {
         } finally {
             client.end();
         }
-      }
+    }
       
 
       static async getLatestSubmissionPeriod() {
