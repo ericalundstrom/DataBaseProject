@@ -47,6 +47,32 @@ class AdminController {
       res.render('createSubmission', { successMessage: null, errorMessage });
     }
   }
+
+  static async showSubmissions(req, res) {
+    try {
+        const submissions = await AdminModel.showSubmissions();
+
+        console.log(submissions);
+
+        res.render('editSubmission', { 
+            submissions, // Skicka data under nyckeln "submissions"
+            successMessage: null, 
+            errorMessage: null 
+        });
+    } catch (error) {
+        const errorMessage = strings.errorMessages.databaseError;
+        console.log(submissions);
+        res.render('editSubmission', { 
+            submissions: [], // Skicka en tom lista om ett fel uppstår
+            successMessage: null, 
+            errorMessage 
+        });
+    }
+  }
+
+
+
+
 }
 
 module.exports = { AdminController };

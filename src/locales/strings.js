@@ -18,7 +18,8 @@ const strings = {
   successMessages: {
     userRegistered: "User registered successfully!",
     articleSubmitted: "Article submitted successfully!",
-    submissionCreated: "Submission time created successfully!"
+    submissionCreated: "Submission time created successfully!",
+    showingSubmissions: "Fetched submission successfully!"
   },
 };
 

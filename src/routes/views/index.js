@@ -86,9 +86,10 @@ router.get('/admin/create-submission', (req, res) => {
 
 router.get('/admin/edit-submission', (req, res) => {
   const user = req.session.user;
-  
+
   res.render('editSubmission', {
     user,
+    submissions: [],
     successMessage: null,
     errorMessage: null
   })

@@ -10,6 +10,7 @@ const pool = new Pool({
 
 const connectDatabase = async () => {
   const client = await pool.connect();
+  console.log("connectar");
   return client;
 };
 

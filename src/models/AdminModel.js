@@ -28,6 +28,21 @@ class AdminModel {
         }
     }
 
+    static async showSubmissions() {
+        const client = await connectDatabase();
+    
+        try {
+            const result = await client.query('select * from submissionperiods ORDER BY start_date;');
+            console.log('Fetched submissions:', result.rows); 
+            return result.rows;
+        } catch (error) {
+            console.error('Error fetching submissions:', error); 
+            throw error;
+        } finally {
+            client.release();
+        }
+    }
+
     static async generateArticleId(client) {
         try {
           const result = await client.query('SELECT MAX(period_id) AS max_id FROM submissionperiods');
@@ -37,18 +52,7 @@ class AdminModel {
           console.error('Error at generating ID:', error);
           throw new Error('Could not generate a unique article ID');
         }
-      }
-
-      static async checkSubmissionExistsForYear(client, year) {
-        try {
-            const query = 'SELECT * FROM submissionperiods WHERE year = $1';
-            const values = [year];
-            const result = await client.query(query, values);
-            return result.rows.length > 0; // Returnerar true om det finns en period för året
-        } catch (error) {
-            console.error('Error checking for existing submission period:', error);
-            throw new Error('Could not verify existing submission period');
-        }
+      
     }
 
 }
