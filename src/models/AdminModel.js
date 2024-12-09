@@ -28,34 +28,21 @@ class AdminModel {
         }
     }
 
-    static async showSubmissions() {
+    static async getArticles() {
         const client = await connectDatabase();
-    
         try {
-            const result = await client.query('select * from submissionperiods ORDER BY start_date;');
-            console.log('Fetched submissions:', result.rows); 
-            return result.rows;
+          const query = 'SELECT title, article_type, keywords, article_status, submission_date FROM articles';
+          const result = await client.query(query);
+          return result.rows;
         } catch (error) {
-            console.error('Error fetching submissions:', error); 
             throw error;
         } finally {
-            client.release();
+            client.end();
         }
-    }
-
-    static async generateArticleId(client) {
-        try {
-          const result = await client.query('SELECT MAX(period_id) AS max_id FROM submissionperiods');
-          const maxId = result.rows[0].max_id || 0;
-          return maxId + 1;
-        } catch (error) {
-          console.error('Error at generating ID:', error);
-          throw new Error('Could not generate a unique article ID');
-        }
+      }
       
-    }
 
-    static async getLatestSubmissionPeriod() {
+      static async getLatestSubmissionPeriod() {
         const client = await connectDatabase();
 
         try {
@@ -77,6 +64,20 @@ class AdminModel {
             client.end();
         }
     }
+
+
+    static async generateArticleId(client) {
+        try {
+          const result = await client.query('SELECT MAX(period_id) AS max_id FROM submissionperiods');
+          const maxId = result.rows[0].max_id || 0;
+          return maxId + 1;
+        } catch (error) {
+          console.error('Error at generating ID:', error);
+          throw new Error('Could not generate a unique article ID');
+        }
+      
+    }
+
 }
 
 module.exports = { AdminModel };

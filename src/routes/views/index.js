@@ -91,7 +91,11 @@ router.get('/admin/welcome-admin', (req, res) => {
 });
 
 router.get('/admin/assign-reviewer', (req, res) => {
-  res.render('assignReviewer');
+  res.render('assignReviewer',{
+      articles: [],
+      successMessage: null,
+      errorMessage:null 
+    });
 });
 
 router.get('/admin/create-submission', (req, res) => {
@@ -99,17 +103,6 @@ router.get('/admin/create-submission', (req, res) => {
 
   res.render('createSubmission', {
     user,
-    successMessage: null,
-    errorMessage: null
-  })
-});
-
-router.get('/admin/edit-submission', (req, res) => {
-  const user = req.session.user;
-
-  res.render('editSubmission', {
-    user,
-    submissions: [],
     successMessage: null,
     errorMessage: null
   })

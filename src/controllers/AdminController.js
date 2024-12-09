@@ -48,31 +48,32 @@ class AdminController {
     }
   }
 
-  static async showSubmissions(req, res) {
-    try {
-        const submissions = await AdminModel.showSubmissions();
+  static async getArticles (req,res){
+    try{
+      const user = req.session.user;
 
-        console.log(submissions);
+      if (!user || !user.user_id) {
+        throw new Error('unauthorized');
+      }
 
-        res.render('editSubmission', { 
-            submissions, // Skicka data under nyckeln "submissions"
-            successMessage: null, 
-            errorMessage: null 
-        });
-    } catch (error) {
-        const errorMessage = strings.errorMessages.databaseError;
-        console.log(submissions);
-        res.render('editSubmission', { 
-            submissions: [], // Skicka en tom lista om ett fel uppstår
-            successMessage: null, 
-            errorMessage 
-        });
+      const articles = await AdminModel.getArticles();
+
+      return articles;
+      
+    }catch (error) {
+      let errorMessage = strings.errorMessages.databaseError;
+      if (error.message === 'Unauthorized') {
+        errorMessage = 'Du måste vara inloggad för att visa artiklar.';
+      }
+  
+      // Rendera vyn med tomma artiklar och ett felmeddelande
+      res.render('submittedArticle', {
+        articles: [],
+        successMessage: null,
+        errorMessage,
+      });
     }
   }
-
-
-
-
 }
 
 module.exports = { AdminController };
