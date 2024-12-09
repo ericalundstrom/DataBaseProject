@@ -58,11 +58,7 @@ class AdminController {
 
       const articles = await AdminModel.getArticles();
 
-      res.render('assignReviewer', {
-        articles,
-        successMessage: null,
-        errorMessage: null
-      });
+      return { articles };
     } catch (error) {
       let errorMessage = strings.errorMessages.databaseError;
       res.render('assignReviewer', {
