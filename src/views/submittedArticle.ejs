@@ -12,8 +12,8 @@
 
   <p>Here you can browse your submitted articles across all years.</p>
 
-  <form method="POST" action="/author/submitted-article" id="yearFilterForm">
-    <select name="year" id="year" onchange="this.form.submit()">
+  <form method="POST" action="/author/submitted-article">
+    <select name="year" onchange="this.form.submit()">
         <%
           const currentYear = new Date().getFullYear();
           const yearsToDisplay = [];
