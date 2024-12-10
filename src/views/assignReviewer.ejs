@@ -11,40 +11,58 @@
 <body>
     <div>Assign Reviewer</div>
 
-    <form action="/admin/assign-reviewer" method="POST">
-      <table>
-        <thead>
-          <tr>
-            <th>Articles</th>
-            <th>Reviewer 1</th>
-            <th>Reviewer 2</th>
-          </tr>
-        </thead>
-        <tbody>
-          
-          <% articles.forEach((article, index) => { %>
+    <div id="reviewers">
+      <h3>Reviewers can get max 2 articles assigned to him or her.</h3>
+      <p>See list over the available reviewers in drop down menu </p>
+    </div>
+
+    <% if (articles && articles.length > 0) { %>
+
+      <form action="/admin/assign-reviewer" method="POST">
+        <table>
+          <thead>
             <tr>
-              <input type="hidden" name="articles[<%= index %>][id]" value="<%= article.article_id %>">
-              <input type="hidden" name="articles[<%= index %>][title]" value="<%= article.title %>">
-              <td><%= article.title %></td>
-              <td>
-                <select name="reviewers[<%= index %>][reviewer1]" required>
-                  <option value="">Select Reviewer</option>
-                  <% reviewers.forEach(reviewer => { %>
-                    <option value="<%= reviewer.user_id %>"><%= reviewer.name %></option>
-                  <% }); %>
-                </select>
-              </td>
-              <td>
-                <select name="reviewers[<%= index %>][reviewer2]" required>
-                  <option value="">Select Reviewer</option>
-                  <% reviewers.forEach(reviewer => { %>
-                    <option value="<%= reviewer.user_id %>"><%= reviewer.name %></option>
-                  <% }); %>
-                </select>
-              </td>
+              <th>Articles</th>
+              <th>Reviewer 1</th>
+              <th>Reviewer 2</th>
             </tr>
-          <% }); %>
+          </thead>
+          <tbody>
+            <% articles.forEach((article, index) => { %>
+                <tr>
+                    <input type="hidden" name="articles[<%= index %>][id]" value="<%= article.article_id %>">
+                    <input type="hidden" name="articles[<%= index %>][title]" value="<%= article.title %>">
+                    <td>
+                        <a href="#" class="article-title"
+                          data-title="<%= article.title %>"
+                          data-content="<%= article.content %>">
+                          <%= article.title %>
+                        </a>
+                    </td>
+                    <td>
+                        <select name="reviewers[<%= index %>][reviewer1]" required>
+                            <option value="">Select Reviewer</option>
+                            <% reviewers.forEach(reviewer => { %>
+                                <option value="<%= reviewer.user_id %>"><%= reviewer.name %> ( <%= reviewer.article_count %> )</option>
+                            <% }); %>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="reviewers[<%= index %>][reviewer2]" required>
+                            <option value="">Select Reviewer</option>
+                            <% reviewers.forEach(reviewer => { %>
+                                <option value="<%= reviewer.user_id %>"><%= reviewer.name %> ( <%= reviewer.article_count %> )</option>
+                            <% }); %>
+                        </select>
+                    </td>
+                </tr>
+            <% }); %>
+      <% } else { %>
+          <tr>
+              <td colspan="3"> There are currently no articles that can be assigned to any reviewer.<br></td>
+          </tr>
+      <% } %>
+        
         </tbody>
       </table>
       <button type="submit">Save</button>

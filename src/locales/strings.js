@@ -16,7 +16,10 @@ const strings = {
     unauthorized: "Unauthorized access.",
     submissionExistsForYear: "Can't create two submission period for one year",
     submissionOutOfPeriod: "The submission period has ended or has not started yet. Please try in the next submission period.",
-    datesMustBeInSameYear: "Can't create a submission period with different years"
+    datesMustBeInSameYear: "Can't create a submission period with different years",
+    AssignTwoReviewers: "Must assign two reviewers to an article",
+    MaxTwoAssigned: "Author already has two articles assigned"
+
   },
   successMessages: {
     userRegistered: "User registered successfully!",

@@ -98,41 +98,52 @@ class AdminController {
       return res.redirect('/login');
     }
   
-    const reviewersData = req.body.reviewers;  // Det här är arrayen med reviewers för varje artikel
+    const reviewersData = req.body.reviewers; 
     const articlesData = req.body.articles; 
-
-    console.log(reviewersData);
-    console.log('Articles Data:', articlesData);
   
     try {
       for (const [index, reviewers] of reviewersData.entries()) {
-        const article = articlesData[index];  // Hämta artikel från req.body
-        console.log('Article:', article);  // Logga varje artikel
+        const article = articlesData[index];
   
         const reviewer1 = reviewers.reviewer1;
         const reviewer2 = reviewers.reviewer2;
-        console.log('Reviewer 1:', reviewer1);
-        console.log('Reviewer 2:', reviewer2);
   
-        // Tilldela reviewers till artikeln
         await AdminModel.assignReviewersToArticle(article.id, reviewer1, reviewer2);
       }
   
       res.render('assignReviewer', {
         user,
-        articles: await AdminModel.getArticles(),  // Artiklar som skickades med formuläret
-        reviewers: await AdminModel.getReviewers(),  // Hämtar en lista av reviewers för att rendera sidan på nytt
+        articles: await AdminModel.getArticles(),  
+        reviewers: await AdminModel.getReviewers(), 
         successMessage: 'Reviewers assigned successfully.',
         errorMessage: null
       });
     } catch (error) {
       console.error(error);
+      let errorMessage;
+      switch (error.message) {
+        case 'fieldsAreMandatory':
+          errorMessage = strings.errorMessages.fieldsAreMandatory;
+          break;
+        case 'unauthorized':
+          errorMessage = strings.errorMessages.unauthorized;
+          break;
+        case 'MaxTwoAssigned':
+          errorMessage = strings.errorMessages.MaxTwoAssigned;
+          break;
+          case 'datesMustBeInSameYear':
+            errorMessage = strings.errorMessages.datesMustBeInSameYear;
+            break;
+        default:
+          errorMessage = strings.errorMessages.databaseError;
+          break;
+      };
       res.render('assignReviewer', {
         user,
-        articles: [],
-        reviewers: [],
+        articles: [],  
+        reviewers: [], 
         successMessage: null,
-        errorMessage: 'Error assigning reviewers.'
+        errorMessage
       });
     }
   }
