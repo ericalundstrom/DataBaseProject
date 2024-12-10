@@ -79,7 +79,7 @@ router.get('/reviewer/welcome-reviewer', (req, res) => {
     return res.redirect('/login');
   }
 
-  ReviewerController.reviewArticle(req, res)
+  ReviewerController.getAllAssignedArticles(req, res)
   .then((articles) => {
     res.render('welcomeReviewer', {
       user,

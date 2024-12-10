@@ -1,7 +1,7 @@
 const { ReviewerModel } = require('../models/ReviewerModel.js');
 
 class ReviewerController {
-  static async reviewArticle(req, res) {
+  static async getAllAssignedArticles(req, res) {
     try {
       const user = req.session.user;
 
