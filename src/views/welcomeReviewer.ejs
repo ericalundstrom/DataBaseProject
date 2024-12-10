@@ -24,7 +24,28 @@
             <th>Submission Date</th>
         </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+            <% articles.forEach(function(article) { %>
+                <tr>
+                    <td>
+                        <a href="#" class="article-title" data-title="<%= article.title %>" data-content="<%= article.content %>">
+                            <%= article.title %>
+                        </a>
+                    </td>
+                    <td><%= article.article_type %></td>
+                    <td><%= article.keywords %></td>
+                    <td><%= article.article_status %></td>
+                    <td><%= article.submission_date.toLocaleDateString() %></td>
+                    <td>
+                        <select>
+                            <option value="">Please select</option>
+                            <option value="accept">Accept</option>
+                            <option value="reject">Reject</option>
+                        </select>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
     </table>
 </body>
 </html>
