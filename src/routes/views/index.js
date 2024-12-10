@@ -147,88 +147,7 @@ router.get('/admin/assign-reviewer', (req, res) => {
   });
 
 
-
-
-
-
-
-
-
-  // AdminController.getArticles(req, res)
-  // .then(({ articles }) => {
-  //   res.render('assignReviewer', {
-  //     user,
-  //     articles,
-  //     successMessage: null,
-  //     errorMessage: null
-  //   });
-  // })
-  // .catch((error) => {
-  //   let errorMessage;
-
-  //   if (error.message === 'unauthorized') {
-  //     errorMessage = 'You must be logged in to access this page.';
-  //   } else if (error.message === 'noArticlesFound') {
-  //     errorMessage = 'No articles found.';
-  //   }
-  //   res.render('assignReviewer', {
-  //     user,
-  //     articles,
-  //     successMessage: null,
-  //     errorMessage: 'Error fetching articles'
-  //   });
-  // });
 });
-
-
-
-// router.get('/admin/assign-reviewer', async (req, res) => {
-//   const user = req.session.user;
-
-//   if (!user) {
-//     return res.redirect('/login');
-//   }
-
-//   try {
-//     // Hämta artiklar och reviewers parallellt
-//     const [articlesResult, reviewersResult] = await Promise.all([
-//       AdminController.getArticles(req, res),
-//       // AdminController.getReviewers(req, res) // Funktion för att hämta reviewers
-//     ]);
-
-//     const articles = articlesResult.articles;
-//     // const reviewers = reviewersResult.reviewers;
-
-//     console.log(reviewers);
-
-//     res.render('assignReviewer', {
-//       user,
-//       articles,
-//       // reviewers, // Lägg till reviewers i vyn
-//       successMessage: null,
-//       errorMessage: null
-//     });
-//   } catch (error) {
-//     let errorMessage;
-
-//     if (error.message === 'unauthorized') {
-//       errorMessage = 'You must be logged in to access this page.';
-//     } else if (error.message === 'noArticlesFound') {
-//       errorMessage = 'No articles found.';
-//     } else {
-//       errorMessage = 'Error fetching articles or reviewers.';
-//     }
-
-//     res.render('assignReviewer', {
-//       user,
-//       articles: [],
-//       // reviewers: [], // Säkerställ att reviewers alltid skickas, även vid fel
-//       successMessage: null,
-//       errorMessage
-//     });
-//   }
-// });
-
 
 router.get('/admin/create-submission', (req, res) => {
   const user = req.session.user;
@@ -240,58 +159,69 @@ router.get('/admin/create-submission', (req, res) => {
   })
 });
 
-// router.post('/admin/create-submission', (req, res) => {
-//   const user = req.session.user;
+router.get('/admin/all-articles', (req, res) => {
+  const user = req.session.user;
 
-//   AdminController.getArticles(req, res)
-//   .then(({ articles }) => {
-//     // När artiklar hämtats, hämta reviewers
-//     AdminController.getReviewers(req, res)
-//       .then(({ reviewers }) => {
-//         // Rendera vyn när både artiklar och reviewers har hämtats
-//         res.render('assignReviewer', {
-//           user,
-//           articles,
-//           reviewers,
-//           successMessage: null,
-//           errorMessage: null
-//         });
-//       })
-//       .catch((reviewerError) => {
-//         // Om ett fel inträffar vid hämtning av reviewers
-//         let errorMessage = 'Error fetching reviewers';
-//         if (reviewerError.message === 'unauthorized') {
-//           errorMessage = 'You must be logged in to access this page.';
-//         }
+  if (!user) {
+    return res.redirect('/login');
+  }
 
-//         res.render('assignReviewer', {
-//           user,
-//           articles, // Artiklar hämtades framgångsrikt, skickas med
-//           reviewers: [], // Ingen reviewer-data att skicka
-//           successMessage: null,
-//           errorMessage
-//         });
-//       });
-//   })
-//   .catch((articleError) => {
-//     // Om ett fel inträffar vid hämtning av artiklar
-//     let errorMessage = 'Error fetching articles';
-//     if (articleError.message === 'unauthorized') {
-//       errorMessage = 'You must be logged in to access this page.';
-//     } else if (articleError.message === 'noArticlesFound') {
-//       errorMessage = 'No articles found.';
-//     }
+  AdminController.getAllArticles(req, res)
+  .then(({ articles }) => {
+    res.render('allArticles', {
+      user,
+      articles,
+      successMessage: null,
+      errorMessage: null,
+      searchQuery: ''
+    });
+  })
+  .catch((error) => {
+    let errorMessage;
+    if (error.message === 'unauthorized') {
+      errorMessage = 'You must be logged in to access this page.';
+    } else if (error.message === 'noArticlesFound') {
+      errorMessage = 'No articles found.';
+    }
+    res.render('allArticles', {
+      user,
+      articles: [],
+      successMessage: null,
+      errorMessage: 'Error fetching articles',
+      searchQuery: ''
+    });
+  });
 
-//     res.render('assignReviewer', {
-//       user,
-//       articles: [], // Ingen artikeldata att skicka
-//       reviewers: [], // Ingen reviewer-data att skicka
-//       successMessage: null,
-//       errorMessage
-//     });
-//   });
+  router.post('/admin/all-articles', async (req, res) => {
+    const user = req.session.user;
+  
+    if (!user) {
+      return res.redirect('/login');
+    }
+  
+    const searchQuery = req.body.query || '';
+  
+    try {
+      const articles = await AdminController.searchArticles(searchQuery);
+      res.render('allArticles', {
+        user,
+        articles,
+        successMessage: null,
+        errorMessage: null,
+        searchQuery
+      });
+    } catch (error) {
+      res.render('allArticles', {
+        user,
+        articles: [],
+        successMessage: null,
+        errorMessage: 'Error fetching articles',
+        searchQuery
+      });
+    }
+  });
 
-// })
+})
 
 module.exports = router;
 

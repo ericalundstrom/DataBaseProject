@@ -48,6 +48,25 @@ class AdminController {
     }
   }
 
+  static async getAllArticles (req, res){
+    try{
+    const user = req.session.user;
+
+      if (!user || !user.user_id) {
+        throw new Error('unauthorized');
+      }
+      const articles = await AdminModel.getAllArticles();
+      return { articles };
+    }catch(error) {
+      let errorMessage = strings.errorMessages.databaseError;
+      res.render('allArticles', {
+        articles: [],
+        successMessage: null,
+        errorMessage
+      });
+    }
+  }
+
   static async getArticles (req,res){
     try{
       const user = req.session.user;
@@ -147,8 +166,16 @@ class AdminController {
       });
     }
   }
-  
-  
+
+  static async searchArticles(query) {
+    if (!query || query.trim() === "") {
+      const articles = await AdminModel.getAllArticles();
+      return { articles };
+    }
+    const articles = await AdminModel.searchArticles(query);
+    return { articles };
+  }
+
 }
 
 module.exports = { AdminController };

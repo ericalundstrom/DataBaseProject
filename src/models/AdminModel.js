@@ -28,6 +28,19 @@ class AdminModel {
         }
     }
 
+    static async getAllArticles (){
+        const client = await connectDatabase();
+        try{
+            const query = `SELECT * FROM articles ORDER BY submission_date DESC`;
+            const result = await client.query(query);
+            return result.rows;
+          } catch (error) {
+              throw new Error('Error fetching articles');
+          } finally {
+              client.end();
+          }
+    }
+
     static async getArticles() {
         const client = await connectDatabase();
         try {
@@ -175,6 +188,31 @@ class AdminModel {
             await client.query(insertReviewer2Query, insertReviewer2Values);
     
         } catch (error) {
+            console.error('Error assigning reviewers:', error);
+            throw new Error(error.message); 
+        } finally {
+            client.end();
+        }
+    }
+
+    static async searchArticles(searchQuery) {
+        const client = await connectDatabase();
+        try{
+            const likeQuery = `%${searchQuery}%`;
+
+            const query = `
+                SELECT * FROM articles 
+                WHERE title LIKE $1 OR 
+                author_id::text LIKE $1 OR
+                year::text LIKE $1 OR 
+                article_type::text LIKE $1 OR 
+                article_status::text LIKE $1
+            `;
+
+            const result = await client.query(query, [likeQuery]);
+            return result.rows; 
+
+        }catch (error) {
             console.error('Error assigning reviewers:', error);
             throw new Error(error.message); 
         } finally {

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conference Management - Articles</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Submitted Articles</h1>
+
+  <form method="POST" action="/admin/all-articles" id="searchForm">
+    <input type="text" name="query" placeholder="Search by title, author, year, type, or status" value="<%= searchQuery || '' %>" />
+    <button type="submit">Search</button>
+  </form>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Article Type</th>
+        <th>Keywords</th>
+        <th>Status</th>
+        <th>Submission Date</th>
+      </tr>
+    </thead>
+    <tbody>
+        <% 
+          const articlesArray = Array.isArray(articles) ? articles : (articles.articles || []);
+        %>
+        <% if (articlesArray.length >= 1) { %>
+          <% for (let i = 0; i < articlesArray.length; i++) { %>
+            <tr>
+              <td>
+                <a href="#" class="article-title"
+                  data-title="<%= articlesArray[i].title %>"
+                  data-content="<%= articlesArray[i].content %>">
+                  <%= articlesArray[i].title %>
+                </a>
+              </td>
+              <td><%= articlesArray[i].article_type %></td>
+              <td><%= articlesArray[i].keywords %></td>
+              <td><%= articlesArray[i].article_status %></td>
+              <td><%= new Date(articlesArray[i].submission_date).toLocaleDateString() %></td>
+            </tr>
+          <% } %>
+        <% } else { %>
+          <tr>
+              <td colspan="5"> There are no articles that match your search.<br></td>
+          </tr>
+        <% } %>
+    </tbody>
+  </table>
+  </table>
+
+  <a href="/admin/welcome-author">
+    <button type="button" class="go-home">Homepage</button>
+  </a>
+
+  <div id="article-modal">
+    <div class="modal-content">
+      <span class="modal-close" id="closeModal">&times;</span>
+      <div class="modal-header" id="modalTitle"></div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+</body>
+</html>
