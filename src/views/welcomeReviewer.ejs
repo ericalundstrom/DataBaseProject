@@ -14,6 +14,23 @@
         <button type="button" class="logout-button">Logout</button>
     </a>
 
+    <form method="POST" action="/reviewer/select-filter">
+        <select name="filter" onchange="this.form.submit()">
+            <option
+                value="all-assigned"
+                <%= filter === 'all-assigned' ? 'selected' : '' %>
+            >
+                All assigned articles
+            </option>
+            <option
+                value="unreviewed"
+                <%= filter === 'unreviewed' ? 'selected' : '' %>
+            >
+                Unreviewed articles
+            </option>
+        </select>
+    </form>
+
     <table>
         <thead>
         <tr>

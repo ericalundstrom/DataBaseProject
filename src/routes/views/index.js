@@ -83,6 +83,7 @@ router.get('/reviewer/welcome-reviewer', (req, res) => {
   .then((articles) => {
     res.render('welcomeReviewer', {
       user,
+      filter: 'all-assigned',
       articles,
       successMessage: null,
       errorMessage: articles.length === 0 ? 'No articles found for the current year.' : null,
@@ -90,6 +91,7 @@ router.get('/reviewer/welcome-reviewer', (req, res) => {
   }).catch((error) => {
      res.render('welcomeReviewer', {
         user,
+        filter: 'all-assigned',
         articles: [],
         successMessage: null,
         errorMessage: error.message
