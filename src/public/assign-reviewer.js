@@ -5,6 +5,8 @@ title.forEach(link => {
     event.preventDefault();
     const title = link.dataset.title;
     const content = link.dataset.content;
+    console.log(content);
+    console.log(event);
     showArticleContent(title, content);
     });
 });

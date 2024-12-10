@@ -4,42 +4,52 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/AssignReviewer.css">
     <script src="/assign-reviewer.js" defer></script>
-    <title>Document</title>
+    <title>Conference Management - Assign Reviewer</title>
 </head>
 <body>
     <div>Assign Reviewer</div>
 
-    <table>
+    <form action="/admin/assign-reviewer" method="POST">
+      <table>
         <thead>
           <tr>
-            <th>Title</th>
-            <th>Article Type</th>
-            <th>Keywords</th>
-            <th>Status</th>
-            <th>Submission Date</th>
+            <th>Articles</th>
+            <th>Reviewer 1</th>
+            <th>Reviewer 2</th>
           </tr>
         </thead>
         <tbody>
-          <% articles.forEach(function(article) { %>
+          
+          <% articles.forEach((article, index) => { %>
             <tr>
+              <input type="hidden" name="articles[<%= index %>][id]" value="<%= article.article_id %>">
+              <input type="hidden" name="articles[<%= index %>][title]" value="<%= article.title %>">
+              <td><%= article.title %></td>
               <td>
-                <a href="#" class="article-title"
-                   data-title="<%= article.title %>"
-                   data-content="<%= article.content %>">
-                  <%= article.title %>
-                </a>
+                <select name="reviewers[<%= index %>][reviewer1]" required>
+                  <option value="">Select Reviewer</option>
+                  <% reviewers.forEach(reviewer => { %>
+                    <option value="<%= reviewer.user_id %>"><%= reviewer.name %></option>
+                  <% }); %>
+                </select>
               </td>
-              <td><%= article.article_type %></td>
-              <td><%= article.keywords %></td>
-              <td><%= article.article_status %></td>
-              <td><%= article.submission_date.toLocaleDateString() %></td>
+              <td>
+                <select name="reviewers[<%= index %>][reviewer2]" required>
+                  <option value="">Select Reviewer</option>
+                  <% reviewers.forEach(reviewer => { %>
+                    <option value="<%= reviewer.user_id %>"><%= reviewer.name %></option>
+                  <% }); %>
+                </select>
+              </td>
             </tr>
           <% }); %>
         </tbody>
       </table>
-
+      <button type="submit">Save</button>
+    </form>
+    
       <a href="/admin/welcome-admin">
         <button type="button" class="go-home">Homepage</button>
       </a>
@@ -52,22 +62,6 @@
         </div>
       </div>
 
-    <!-- <div id="Articles"></div>
-    <div id="Reviewers">
-
-        <div id="firstReviewer"></div>
-        <div id="secondReviewer"></div>
-
-    </div>
-
-    <a href="/admin/assign-reviewer">
-        <button type="button" class="go-home"> Assign </button>
-    </a>
-
-
-    <a href="/admin/welcome-admin">
-        <button type="button" class="go-home">Homepage</button>
-    </a> -->
     <% if (errorMessage || successMessage) { %>
         <div class="auth-message <%= errorMessage ? 'error-message' : 'success-message' %>"
             <p><%= errorMessage || successMessage %></p>

@@ -68,6 +68,76 @@ class AdminController {
       });
     }
   }
+
+  static async getReviewers (req,res){
+    try{
+      const user = req.session.user;
+
+      if (!user || !user.user_id) {
+        throw new Error('unauthorized');
+      }
+
+      const reviewers = await AdminModel.getReviewers();
+
+      return {reviewers};
+    }catch (error) {
+      let errorMessage = strings.errorMessages.databaseError;
+      res.render('assignReviewer', {
+        reviewers: [],
+        successMessage: null,
+        errorMessage
+      });
+    }
+  }
+
+
+  static async assignReviewers(req, res) {
+    const user = req.session.user;
+  
+    if (!user || !user.user_id) {
+      return res.redirect('/login');
+    }
+  
+    const reviewersData = req.body.reviewers;  // Det här är arrayen med reviewers för varje artikel
+    const articlesData = req.body.articles; 
+
+    console.log(reviewersData);
+    console.log('Articles Data:', articlesData);
+  
+    try {
+      for (const [index, reviewers] of reviewersData.entries()) {
+        const article = articlesData[index];  // Hämta artikel från req.body
+        console.log('Article:', article);  // Logga varje artikel
+  
+        const reviewer1 = reviewers.reviewer1;
+        const reviewer2 = reviewers.reviewer2;
+        console.log('Reviewer 1:', reviewer1);
+        console.log('Reviewer 2:', reviewer2);
+  
+        // Tilldela reviewers till artikeln
+        await AdminModel.assignReviewersToArticle(article.id, reviewer1, reviewer2);
+      }
+  
+      res.render('assignReviewer', {
+        user,
+        articles: await AdminModel.getArticles(),  // Artiklar som skickades med formuläret
+        reviewers: await AdminModel.getReviewers(),  // Hämtar en lista av reviewers för att rendera sidan på nytt
+        successMessage: 'Reviewers assigned successfully.',
+        errorMessage: null
+      });
+    } catch (error) {
+      console.error(error);
+      res.render('assignReviewer', {
+        user,
+        articles: [],
+        reviewers: [],
+        successMessage: null,
+        errorMessage: 'Error assigning reviewers.'
+      });
+    }
+  }
+  
+  
 }
 
 module.exports = { AdminController };
