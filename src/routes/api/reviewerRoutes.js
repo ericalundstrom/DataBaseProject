@@ -4,5 +4,6 @@ const { ReviewerController } = require('../../controllers/reviewerController.js'
 const router = express.Router();
 
 router.post('/select-filter', ReviewerController.getArticles);
+router.post('/review', ReviewerController.review);
 
 module.exports = router;

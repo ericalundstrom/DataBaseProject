@@ -49,6 +49,16 @@ class ReviewerModel {
       client.end();
     }
   }
+
+  static async review(action) {
+    try {
+      await client.query(query, values);
+    } catch (error) {
+      throw error;
+    } finally {
+      client.end();
+    }
+  }
 }
 
 module.exports = { ReviewerModel };

@@ -195,7 +195,15 @@ class AdminModel {
             `;
             const insertReviewer2Values = [secondReviewId, articleId, reviewer2];
             await client.query(insertReviewer2Query, insertReviewer2Values);
-    
+
+            const updateArticleStatusQuery = `
+                UPDATE Articles
+                SET article_status = 'under review'
+                WHERE article_id = $1
+            `;
+
+            await client.query(updateArticleStatusQuery, [articleId]);
+
         } catch (error) {
             console.error('Error assigning reviewers:', error);
             throw new Error('Error assigning reviewers');

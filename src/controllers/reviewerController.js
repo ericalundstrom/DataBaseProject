@@ -63,6 +63,18 @@ class ReviewerController {
       throw new Error('There was an error fetching the articles. Please try again later.');
     }
   }
+
+  static async review(req, res) {
+    try {
+      const { action } = req.body;
+
+      const user = req.session.user;
+
+      if (!user || !user.user_id) {
+        throw new Error('unauthorized');
+      }
+    }
+  }
 }
 
 module.exports = { ReviewerController };
