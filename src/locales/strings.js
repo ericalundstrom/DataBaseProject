@@ -25,7 +25,8 @@ const strings = {
     userRegistered: "User registered successfully!",
     articleSubmitted: "Article submitted successfully!",
     submissionCreated: "Submission time created successfully!",
-    showingSubmissions: "Fetched submission successfully!"
+    showingSubmissions: "Fetched submission successfully!",
+    deletedReviewer: "Deleted reviewer successfully!",
   },
 };
 

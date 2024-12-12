@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Management</title>
+    <link rel="stylesheet" href="/styles.css">
+    <script src="/register.js" defer></script>
+</head>
+<body>
+    <h1>Add a reviewer</h1>
+    <p>Here you can add a reviewer to our system</p>
+
+    <form action="/admin/add-reviewer" method="POST">
+        <label for="first_name">First Name:</label>
+        <input type="text" id="first_name" name="first_name" required><br><br>
+
+        <label for="last_name">Last Name:</label>
+        <input type="text" id="last_name" name="last_name" required><br><br>
+
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" name="phone" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="affiliation">Research area:</label>
+        <input type="text" id="Research_area" name="Research_area" required><br><br>
+
+        <label for="password">Assigned password:</label>
+        <input type="password" id="assigned_password" name="assigned_password" required><br><br>
+
+        <button type="submit">Create reviewer</button>
+
+        
+    </form>
+
+    <% if (errorMessage || successMessage) { %>
+        <div class="auth-message <%= errorMessage ? 'error-message' : 'success-message' %>"
+            <p><%= errorMessage || successMessage %></p>
+        </div>
+    <% } %>
+
+    <a href="/admin/welcome-author">
+        <button type="button" class="go-home">Homepage</button>
+      </a>
+</body>
+</html>

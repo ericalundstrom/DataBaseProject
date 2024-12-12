@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Management</title>
+    <link rel="stylesheet" href="/removeReviewer.css">
+    <script src="/removeReviewer.js" defer></script>
+</head>
+<body>
+    <h1>Remove a reviewer</h1>
+
+    <table>
+        <thead>
+          <tr>
+            <th colspan="3">Reviewers</th> 
+          </tr>
+        </thead>
+        <tbody>
+          <% reviewers.forEach(function(reviewer) { %>
+            <tr>
+              <td>
+                <a href="#" class="reviewer-name"
+                data-title="<%= reviewer.first_name + ' ' + reviewer.last_name %>"
+                data-content="<%= 'Affiliation: ' + reviewer.affiliation + ' ' + '<br>' + 'Email: ' + reviewer.email %>">
+                  <%= reviewer.first_name %>
+                </a>
+              </td>
+              <td><%= reviewer.last_name %></td>
+              <td class="delete">
+                <form action="/remove-reviewer?_method=DELETE" method="POST">
+                  <input type="hidden" name="reviewer_id" value="<%= reviewer.user_id %>">
+                  <button type="submit">Delete</button>
+                </form>
+                                
+              </td>
+            </tr>
+          <% }); %>
+        </tbody>
+      </table>
+
+      <div id="article-modal">
+        <div class="modal-content">
+          <span class="modal-close" id="closeModal">&times;</span>
+          <div class="modal-header" id="modalTitle"></div>
+          <div id="modalContent"></div>
+        </div>
+      </div>
+
+    <% if (errorMessage || successMessage) { %>
+        <div class="auth-message <%= errorMessage ? 'error-message' : 'success-message' %>"
+            <p><%= errorMessage || successMessage %></p>
+        </div>
+    <% } %>
+
+
+    <a href="/admin/welcome-author">
+        <button type="button" class="go-home">Homepage</button>
+      </a>
+
+</body>
+</html>

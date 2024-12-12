@@ -33,6 +33,7 @@ class AdminModel {
         try{
             const query = `SELECT * FROM articles ORDER BY submission_date DESC`;
             const result = await client.query(query);
+            console.log(result);
             return result.rows;
           } catch (error) {
               throw new Error('Error fetching articles');
@@ -83,7 +84,19 @@ class AdminModel {
         }
       }
       
-      
+      static async getAllReviewers (){
+        const client = await connectDatabase();
+        try{
+            const query = `select * from users where role = 'reviewer' order by first_name`;
+            const result = await client.query(query);
+          return result.rows;
+        } catch (error) {
+          console.error('Error fetching reviewers:', error);
+          throw new Error('Could not fetch reviewers');
+        } finally {
+          client.end();
+        }
+    }
 
       static async getLatestSubmissionPeriod() {
         const client = await connectDatabase();
@@ -218,6 +231,23 @@ class AdminModel {
         } finally {
             client.end();
         }
+    }
+
+    static async removeReviewer (reviewer_id){
+        const client = await connectDatabase();
+
+        try{
+            const query = `delete from users where user_id = $1;`;
+            const values = [reviewer_id]; 
+
+            await client.query(query, values);
+
+        }catch (error) {
+            console.error('Error assigning reviewers:', error);
+        } finally {
+            client.end();
+        }
+        
     }
 
 }

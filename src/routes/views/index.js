@@ -159,6 +159,112 @@ router.get('/admin/create-submission', (req, res) => {
   })
 });
 
+router.get('/admin/add-reviewer', (req, res) => {
+  const user = req.session.user;
+
+  res.render('addReviewer', {
+    user,
+    successMessage: null,
+    errorMessage: null
+  })
+})
+
+router.get('/admin/remove-reviewer', (req, res) => {
+  const user = req.session.user;
+  AdminController.getAllReviewers(req, res)
+  .then(({ reviewers }) => {
+    // Rendera vyn när både artiklar och reviewers har hämtats
+    res.render('removeReviewer', {
+      user,
+      reviewers,
+      successMessage: null,
+      errorMessage: null
+    });
+  })
+  .catch((reviewerError) => {
+    // Om ett fel inträffar vid hämtning av reviewers
+    let errorMessage = 'Error fetching reviewers';
+    if (reviewerError.message === 'unauthorized') {
+      errorMessage = 'You must be logged in to access this page.';
+    }
+
+    res.render('removeReviewer', {
+      user,
+      successMessage: null,
+      errorMessage
+    });
+  });
+})
+
+// router.delete('/admin/remove-reviewer', (req,res) => {
+//   const user = req.session.user;
+
+//   res.render('removeReviewer', {
+//     user,
+//     successMessage: null,
+//     errorMessage: null,
+//     articles: []
+//   })
+
+// })
+
+
+
+
+// router.delete('/admin/remove-reviewer', async (req, res) => {
+//   const user = req.session.user;
+
+//   if (!user) {
+//     return res.redirect('/login');
+//   }
+
+//   try {
+//     const { reviewer_id } = req.body; 
+//     await AdminController.removeReviewer({ user_id: reviewer_id });
+
+//     const reviewers = await AdminController.getAllReviewers();
+//     res.render('removeReviewer', {
+//       user,
+//       reviewers,
+//       successMessage: 'Reviewer deleted successfully',
+//       errorMessage: null,
+//     });
+//   } catch (error) {
+//     res.render('removeReviewer', {
+//       user,
+//       successMessage: null,
+//       errorMessage: 'Error deleting reviewer',
+//     });
+//   }
+// });
+
+
+
+router.delete('/remove-reviewer', async (req, res) => {
+  try {
+    const { reviewer_id } = req.body; // Hämta reviewer_id från request body
+    if (!reviewer_id) {
+      return res.status(400).render('removeReviewer', {
+        errorMessage: 'Reviewer ID is missing',
+        successMessage: null,
+        reviewers: []
+      });
+    }
+
+    // Anropa AdminController för att ta bort reviewer
+    await AdminController.removeReviewer(req, res);
+  } catch (error) {
+    console.error('Error removing reviewer:', error);
+    res.status(500).render('removeReviewer', {
+      errorMessage: 'An error occurred while removing the reviewer',
+      successMessage: null,
+      reviewers: []
+    });
+  }
+});
+
+
+
 router.get('/admin/all-articles', (req, res) => {
   const user = req.session.user;
 
@@ -191,37 +297,37 @@ router.get('/admin/all-articles', (req, res) => {
       searchQuery: ''
     });
   });
-
-  router.post('/admin/all-articles', async (req, res) => {
-    const user = req.session.user;
-  
-    if (!user) {
-      return res.redirect('/login');
-    }
-  
-    const searchQuery = req.body.query || '';
-  
-    try {
-      const articles = await AdminController.searchArticles(searchQuery);
-      res.render('allArticles', {
-        user,
-        articles,
-        successMessage: null,
-        errorMessage: null,
-        searchQuery
-      });
-    } catch (error) {
-      res.render('allArticles', {
-        user,
-        articles: [],
-        successMessage: null,
-        errorMessage: 'Error fetching articles',
-        searchQuery
-      });
-    }
-  });
-
 })
+
+router.post('/admin/all-articles', async (req, res) => {
+  const user = req.session.user;
+
+  if (!user) {
+    return res.redirect('/login');
+  }
+
+  const searchQuery = req.body.query || '';
+
+  try {
+    const articles = await AdminController.searchArticles(searchQuery);
+    res.render('allArticles', {
+      user,
+      articles,
+      successMessage: null,
+      errorMessage: null,
+      searchQuery
+    });
+  } catch (error) {
+    res.render('allArticles', {
+      user,
+      articles: [],
+      successMessage: null,
+      errorMessage: 'Error fetching articles',
+      searchQuery
+    });
+  }
+});
+
 
 module.exports = router;
 

@@ -1,5 +1,6 @@
 const express = require('express');
 const session = require('express-session');
+const methodOverride = require('method-override');
 const path = require('path');
 const bodyParser = require('body-parser');
 const multer = require('multer');
@@ -26,6 +27,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 app.use(upload.none());
+
+app.use(methodOverride('_method'));
 
 app.use(session({
   secret: 'secret',

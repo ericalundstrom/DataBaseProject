@@ -109,6 +109,27 @@ class AdminController {
     }
   }
 
+  static async getAllReviewers (req, res) {
+    try{
+      const user = req.session.user;
+
+      if (!user || !user.user_id) {
+        return res.redirect('/login');
+      }
+
+      const reviewers = await AdminModel.getAllReviewers();
+
+      return {reviewers}
+    }catch (error) {
+      let errorMessage = strings.errorMessages.databaseError;
+      res.render('removeReviewer', {
+        reviewers: [],
+        successMessage: null,
+        errorMessage
+      });
+    }
+  }
+
 
   static async assignReviewers(req, res) {
     const user = req.session.user;
@@ -174,6 +195,42 @@ class AdminController {
     }
     const articles = await AdminModel.searchArticles(query);
     return { articles };
+  }
+
+  static async removeReviewer (req, res){
+    try {
+      const user = req.session.user;
+      
+      if (!user || !user.user_id) {
+        return res.redirect('/login');
+      }
+      const { reviewer_id } = req.body;
+      await AdminModel.removeReviewer(reviewer_id); 
+      const reviewers = await AdminModel.getAllReviewers();
+
+      res.render('removeReviewer', {
+        successMessage: strings.successMessages.deletedReviewer,
+        errorMessage: null,
+        reviewers
+      });
+     
+    } catch (error) {
+      let errorMessage;
+
+      switch (error.message) {
+        case 'unauthorized':
+          errorMessage = strings.errorMessages.unauthorized;
+          break;
+        default:
+          errorMessage = strings.errorMessages.databaseError;
+          break;
+      }
+      res.render('removeReviewer', { 
+        successMessage: null, 
+        errorMessage, 
+        reviewers: []
+      });
+    }
   }
 
 }
