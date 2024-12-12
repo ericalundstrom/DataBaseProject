@@ -233,23 +233,36 @@ class AdminModel {
         }
     }
 
-    static async removeReviewer (reviewer_id){
+    static async removeReviewer(reviewer_id) {
         const client = await connectDatabase();
-
-        try{
-            const query = `delete from users where user_id = $1;`;
-            const values = [reviewer_id]; 
-
-            await client.query(query, values);
-
-        }catch (error) {
-            console.error('Error assigning reviewers:', error);
+    
+        try {
+            await client.query('BEGIN');
+    
+            const deleteArticleReviewerQuery = `DELETE FROM article_reviewers_table WHERE reviewer_id = $1;`;
+            const deleteArticleReviewerValues = [reviewer_id];
+            await client.query(deleteArticleReviewerQuery, deleteArticleReviewerValues);
+    
+            const deleteReviewerQuery = `DELETE FROM reviewers_table WHERE reviewer_id = $1;`;
+            const deleteReviewerValues = [reviewer_id];
+            await client.query(deleteReviewerQuery, deleteReviewerValues);
+    
+            const deleteUserQuery = `DELETE FROM users WHERE user_id = $1;`;
+            const deleteUserValues = [reviewer_id];
+            await client.query(deleteUserQuery, deleteUserValues);
+    
+            await client.query('COMMIT');
+        } catch (error) {
+            console.error('Error removing reviewer:', error);
+    
+            await client.query('ROLLBACK');
+            throw error;
         } finally {
             client.end();
         }
-        
     }
-
+    
+    
 }
 
 module.exports = { AdminModel };

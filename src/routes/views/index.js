@@ -196,53 +196,9 @@ router.get('/admin/remove-reviewer', (req, res) => {
   });
 })
 
-// router.delete('/admin/remove-reviewer', (req,res) => {
-//   const user = req.session.user;
-
-//   res.render('removeReviewer', {
-//     user,
-//     successMessage: null,
-//     errorMessage: null,
-//     articles: []
-//   })
-
-// })
-
-
-
-
-// router.delete('/admin/remove-reviewer', async (req, res) => {
-//   const user = req.session.user;
-
-//   if (!user) {
-//     return res.redirect('/login');
-//   }
-
-//   try {
-//     const { reviewer_id } = req.body; 
-//     await AdminController.removeReviewer({ user_id: reviewer_id });
-
-//     const reviewers = await AdminController.getAllReviewers();
-//     res.render('removeReviewer', {
-//       user,
-//       reviewers,
-//       successMessage: 'Reviewer deleted successfully',
-//       errorMessage: null,
-//     });
-//   } catch (error) {
-//     res.render('removeReviewer', {
-//       user,
-//       successMessage: null,
-//       errorMessage: 'Error deleting reviewer',
-//     });
-//   }
-// });
-
-
-
 router.delete('/remove-reviewer', async (req, res) => {
   try {
-    const { reviewer_id } = req.body; // Hämta reviewer_id från request body
+    const { reviewer_id } = req.body; 
     if (!reviewer_id) {
       return res.status(400).render('removeReviewer', {
         errorMessage: 'Reviewer ID is missing',
@@ -251,7 +207,6 @@ router.delete('/remove-reviewer', async (req, res) => {
       });
     }
 
-    // Anropa AdminController för att ta bort reviewer
     await AdminController.removeReviewer(req, res);
   } catch (error) {
     console.error('Error removing reviewer:', error);
