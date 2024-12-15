@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { AuthorController } = require('../../controllers/authorController.js');
 const { AdminController } = require('../../controllers/adminController.js');
+const { ReviewerController } = require('../../controllers/reviewerController.js');
 
 router.get('/', (req, res) => {
   res.render('index', { successMessage: null, errorMessage: null });
@@ -78,7 +79,24 @@ router.get('/reviewer/welcome-reviewer', (req, res) => {
     return res.redirect('/login');
   }
 
-  res.render('welcomeReviewer', { user });
+  ReviewerController.getAllAssignedArticles(req, res)
+  .then((articles) => {
+    res.render('welcomeReviewer', {
+      user,
+      filter: 'all-assigned',
+      articles,
+      successMessage: null,
+      errorMessage: articles.length === 0 ? 'No articles found for the current year.' : null,
+    });
+  }).catch((error) => {
+     res.render('welcomeReviewer', {
+        user,
+        filter: 'all-assigned',
+        articles: [],
+        successMessage: null,
+        errorMessage: error.message
+      });
+   });
 });
 
 router.get('/admin/welcome-admin', (req, res) => {

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conference Management</title>
     <link rel="stylesheet" href="/styles.css">
+    <script src="/welcomeReviewer.js" defer></script>
 </head>
 <body>
     <h1>Welcome reviewer, <%= user.first_name %> <%= user.last_name %>!</h1>
@@ -14,6 +15,23 @@
         <button type="button" class="logout-button">Logout</button>
     </a>
 
+    <form method="POST" action="/reviewer/select-filter">
+        <select name="filter" onchange="this.form.submit()">
+            <option
+                value="all-assigned"
+                <%= filter === 'all-assigned' ? 'selected' : '' %>
+            >
+                All assigned articles
+            </option>
+            <option
+                value="unreviewed"
+                <%= filter === 'unreviewed' ? 'selected' : '' %>
+            >
+                Unreviewed articles
+            </option>
+        </select>
+    </form>
+
     <table>
         <thead>
         <tr>
@@ -22,9 +40,49 @@
             <th>Keywords</th>
             <th>Status</th>
             <th>Submission Date</th>
+            <th>My Review Decision</th>
         </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+            <% articles.forEach(function(article) { %>
+                <tr>
+                    <td>
+                        <a href="#" class="article-title" data-title="<%= article.title %>" data-content="<%= article.content %>">
+                            <%= article.title %>
+                        </a>
+                    </td>
+                    <td><%= article.article_type %></td>
+                    <td><%= article.keywords %></td>
+                    <td><%= article.article_status %></td>
+                    <td><%= article.submission_date.toLocaleDateString() %></td>
+                    <td>
+                        <% if (article.decision === 'accepted' || article.decision === 'rejected') { %>
+                            <%= article.decision %>
+                        <% } else if (article.decision === 'under review' || !article.decision) { %>
+                            <form method="POST" action="/reviewer/review">
+                                <input type="hidden" name="article_id" value="<%= article.article_id %>">
+                                <input type="hidden" name="filter" value="<%= filter %>">
+                                <select name="action" onchange="this.form.submit()">
+                                    <option value="">Please select</option>
+                                    <option value="accepted">Accept</option>
+                                    <option value="rejected">Reject</option>
+                                </select>
+                            </form>
+                        <% } else { %>
+                            Invalid decision
+                        <% } %>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
     </table>
+
+    <div id="article-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="closeModal">&times;</span>
+            <div class="modal-header" id="modalTitle"></div>
+            <div id="modalContent"></div>
+        </div>
+    </div>
 </body>
 </html>
