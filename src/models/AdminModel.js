@@ -31,9 +31,18 @@ class AdminModel {
     static async getAllArticles (){
         const client = await connectDatabase();
         try{
-            const query = `SELECT * FROM articles ORDER BY submission_date DESC`;
+            const query = `
+                SELECT 
+                    articles.*, 
+                    concat(users.first_name, ' ', users.last_name) AS full_name
+                FROM 
+                    articles
+                LEFT JOIN 
+                    users ON articles.author_id = users.user_id
+                ORDER BY 
+                    submission_date DESC
+            `;
             const result = await client.query(query);
-            console.log(result);
             return result.rows;
           } catch (error) {
               throw new Error('Error fetching articles');
@@ -214,12 +223,19 @@ class AdminModel {
             const likeQuery = `%${searchQuery}%`;
 
             const query = `
-                SELECT * FROM articles 
-                WHERE title LIKE $1 OR 
-                author_id::text LIKE $1 OR
-                year::text LIKE $1 OR 
-                article_type::text LIKE $1 OR 
-                article_status::text LIKE $1
+                SELECT articles.*, concat(users.first_name, ' ', users.last_name) AS full_name FROM articles
+                LEFT JOIN users ON articles.author_id = users.user_id
+                WHERE 
+                (users.role = 'author') AND (
+                    title ILIKE $1 OR 
+                    year::text ILIKE $1 OR 
+                    article_type::text ILIKE $1 OR 
+                    article_status::text ILIKE $1 OR
+                    users.first_name ILIKE $1 OR
+                    users.last_name ILIKE $1     
+                )
+                ORDER BY 
+                submission_date DESC;
             `;
 
             const result = await client.query(query, [likeQuery]);
