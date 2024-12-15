@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conference Management</title>
     <link rel="stylesheet" href="/styles.css">
+    <script src="/welcomeReviewer.js" defer></script>
 </head>
 <body>
     <h1>Welcome reviewer, <%= user.first_name %> <%= user.last_name %>!</h1>
@@ -39,7 +40,7 @@
             <th>Keywords</th>
             <th>Status</th>
             <th>Submission Date</th>
-            <th>Review</th>
+            <th>My Review Decision</th>
         </tr>
         </thead>
         <tbody>
@@ -55,17 +56,33 @@
                     <td><%= article.article_status %></td>
                     <td><%= article.submission_date.toLocaleDateString() %></td>
                     <td>
-                        <form method="POST" action="/reviewer/review">
-                            <select name="action" onchange="this.form.submit()">
-                                <option value="">Please select</option>
-                                <option value="accept">Accept</option>
-                                <option value="reject">Reject</option>
-                            </select>
-                        </form>
+                        <% if (article.decision === 'accepted' || article.decision === 'rejected') { %>
+                            <%= article.decision %>
+                        <% } else if (article.decision === 'under review' || !article.decision) { %>
+                            <form method="POST" action="/reviewer/review">
+                                <input type="hidden" name="article_id" value="<%= article.article_id %>">
+                                <input type="hidden" name="filter" value="<%= filter %>">
+                                <select name="action" onchange="this.form.submit()">
+                                    <option value="">Please select</option>
+                                    <option value="accepted">Accept</option>
+                                    <option value="rejected">Reject</option>
+                                </select>
+                            </form>
+                        <% } else { %>
+                            Invalid decision
+                        <% } %>
                     </td>
                 </tr>
             <% }); %>
         </tbody>
     </table>
+
+    <div id="article-modal">
+        <div class="modal-content">
+            <span class="modal-close" id="closeModal">&times;</span>
+            <div class="modal-header" id="modalTitle"></div>
+            <div id="modalContent"></div>
+        </div>
+    </div>
 </body>
 </html>
