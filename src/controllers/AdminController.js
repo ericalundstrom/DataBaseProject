@@ -145,10 +145,21 @@ class AdminController {
       for (const [index, reviewers] of reviewersData.entries()) {
         const article = articlesData[index];
   
-        const reviewer1 = reviewers.reviewer1;
-        const reviewer2 = reviewers.reviewer2;
+        const reviewer1 = reviewers.reviewer1 || null;
+        const reviewer2 = reviewers.reviewer2 || null;
+
+        if (!reviewer1 && !reviewer2) {
+          // Om inga reviewers är tilldelade, hoppa över denna artikel
+          continue;
+        }
+
+        if (reviewer1 && reviewer2) {
+          await AdminModel.assignReviewersToArticle(article.id, reviewer1, reviewer2);
+        } else {
+            throw new Error('fieldsAreMandatory'); // För att säkerställa två reviewers
+        }
   
-        await AdminModel.assignReviewersToArticle(article.id, reviewer1, reviewer2);
+        // await AdminModel.assignReviewersToArticle(article.id, reviewer1, reviewer2);
       }
   
       res.render('assignReviewer', {
@@ -171,17 +182,14 @@ class AdminController {
         case 'MaxTwoAssigned':
           errorMessage = strings.errorMessages.MaxTwoAssigned;
           break;
-          case 'datesMustBeInSameYear':
-            errorMessage = strings.errorMessages.datesMustBeInSameYear;
-            break;
         default:
           errorMessage = strings.errorMessages.databaseError;
           break;
       };
       res.render('assignReviewer', {
         user,
-        articles: [],  
-        reviewers: [], 
+        articles: await AdminModel.getArticles(),  
+        reviewers: await AdminModel.getReviewers(),  
         successMessage: null,
         errorMessage
       });

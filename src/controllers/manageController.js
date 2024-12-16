@@ -1,5 +1,7 @@
 const { ManageModel } = require('../models/ManageModel.js');
 const strings = require('../locales/strings.js');
+const { query } = require('express');
+const { AdminController } = require('./adminController.js');
 
 class ManageController {
   static async register(req, res) {
@@ -69,11 +71,7 @@ class ManageController {
   
         res.render('addReviewer', { successMessage: null, errorMessage });
       }
-
-      
-    } else {
-      
-    }
+    } 
   }
 
   static async login(req, res) {

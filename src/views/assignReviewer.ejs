@@ -40,7 +40,7 @@
                         </a>
                     </td>
                     <td>
-                        <select name="reviewers[<%= index %>][reviewer1]" required>
+                        <select name="reviewers[<%= index %>][reviewer1]">
                             <option value="">Select Reviewer</option>
                             <% reviewers.forEach(reviewer => { %>
                                 <option value="<%= reviewer.user_id %>"><%= reviewer.name %> ( <%= reviewer.article_count %> )</option>
@@ -48,7 +48,7 @@
                         </select>
                     </td>
                     <td>
-                        <select name="reviewers[<%= index %>][reviewer2]" required>
+                        <select name="reviewers[<%= index %>][reviewer2]">
                             <option value="">Select Reviewer</option>
                             <% reviewers.forEach(reviewer => { %>
                                 <option value="<%= reviewer.user_id %>"><%= reviewer.name %> ( <%= reviewer.article_count %> )</option>

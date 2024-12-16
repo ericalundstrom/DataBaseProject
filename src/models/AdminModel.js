@@ -188,8 +188,8 @@ class AdminModel {
                 throw new Error('AssignTwoReviewers');
             }
            
-            await this.addReviewerToTable(client, reviewer1); // Lägg till första reviewern
-            await this.addReviewerToTable(client, reviewer2); // Lägg till andra reviewern
+            // await this.addReviewerToTable(client, reviewer1); // Lägg till första reviewern
+            // await this.addReviewerToTable(client, reviewer2); // Lägg till andra reviewern
     
 
             const newReviewId = await this.generateReviewId(client);
