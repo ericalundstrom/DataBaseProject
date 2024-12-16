@@ -9,11 +9,36 @@
 </head>
 <body>
   <h1>Submitted Articles</h1>
+  
+  <form method="GET" action="/admin/all-articles">
+    <label for="year">Filter by Year:</label>
+    <select name="year" id="year" onchange="this.form.submit()">
+      <option value="">All Years</option>
+     <% const yearsArray = Array.isArray(years) ? years : (years || []); %>
+      <% for (let index = 0; index < yearsArray.length; index++) { %>
+        <option value="<%= yearsArray[index].year %>" 
+          <%= yearsArray[index].year == year ? 'selected' : '' %>>
+          <%= yearsArray[index].year %>
+        </option>
+      <% } %>
+    </select>
+  </form>  
 
   <form method="POST" action="/admin/all-articles" id="searchForm">
+    <input type="hidden" name="year" id="hiddenYear" value="<%= year || '' %>">
     <input type="text" name="query" placeholder="Search by title, author, year, type, or status" value="<%= searchQuery || '' %>" />
     <button type="submit">Search</button>
   </form>
+
+  <script>
+    // Synkronisera dolda året med dropdown
+    const yearDropdown = document.getElementById('year');
+    const hiddenYearInput = document.getElementById('hiddenYear');
+  
+    yearDropdown.addEventListener('change', () => {
+      hiddenYearInput.value = yearDropdown.value;
+    });
+  </script>
 
   <table>
     <thead>
@@ -27,7 +52,7 @@
       </tr>
     </thead>
     <tbody>
-        <%
+        <% 
           const articlesArray = Array.isArray(articles) ? articles : (articles.articles || []);
         %>
         <% if (articlesArray.length >= 1) { %>
@@ -37,7 +62,7 @@
                 <a href="#" class="article-title"
                   data-title="<%= articlesArray[i].title %>"
                   data-content="<%= articlesArray[i].content %>"
-                  data-author="<%= articlesArray[i].full_name %>">
+                  data-author="'<%= articlesArray[i].full_name %>">
                   <%= articlesArray[i].title %>
                 </a>
               </td>

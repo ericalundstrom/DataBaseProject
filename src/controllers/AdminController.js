@@ -48,16 +48,24 @@ class AdminController {
     }
   }
 
-  static async getAllArticles (req, res){
-    try{
-    const user = req.session.user;
+  static async getAllArticles(req, res) {
+    try {
+        const user = req.session.user;
 
-      if (!user || !user.user_id) {
-        throw new Error('unauthorized');
-      }
-      const articles = await AdminModel.getAllArticles();
-      return { articles };
-    }catch(error) {
+        if (!user || !user.user_id) {
+            throw new Error('unauthorized');
+        }
+
+        const year = req.query.year || null; 
+        const articles = await AdminModel.getAllArticles(year);
+        const years = await AdminModel.getArticleYears();
+        
+        return { 
+            articles, 
+            years, 
+            searchQuery: req.query.query || '' 
+        };
+    } catch (error) {
       let errorMessage = strings.errorMessages.databaseError;
       res.render('allArticles', {
         articles: [],
@@ -130,7 +138,6 @@ class AdminController {
     }
   }
 
-
   static async assignReviewers(req, res) {
     const user = req.session.user;
   
@@ -149,17 +156,15 @@ class AdminController {
         const reviewer2 = reviewers.reviewer2 || null;
 
         if (!reviewer1 && !reviewer2) {
-          // Om inga reviewers är tilldelade, hoppa över denna artikel
           continue;
         }
 
         if (reviewer1 && reviewer2) {
           await AdminModel.assignReviewersToArticle(article.id, reviewer1, reviewer2);
         } else {
-            throw new Error('fieldsAreMandatory'); // För att säkerställa två reviewers
+            throw new Error('fieldsAreMandatory'); 
         }
   
-        // await AdminModel.assignReviewersToArticle(article.id, reviewer1, reviewer2);
       }
   
       res.render('assignReviewer', {
@@ -195,15 +200,27 @@ class AdminController {
       });
     }
   }
+ 
+  static async searchArticles(query, year) {
 
-  static async searchArticles(query) {
-    if (!query || query.trim() === "") {
-      const articles = await AdminModel.getAllArticles();
-      return { articles };
+    const isQueryEmpty = !query || query.trim() === "";
+    const isYearNull = year == null;
+    const years = await AdminModel.getArticleYears();
+
+    if (isQueryEmpty) {
+
+        const articles = isYearNull 
+            ? await AdminModel.getAllArticles() 
+            : await AdminModel.getAllArticles(year);
+        return { articles, years };
+    } else {
+
+        const articles = isYearNull 
+            ? await AdminModel.searchArticles(query) 
+            : await AdminModel.searchArticles(query, year); 
+        return { articles, years };
     }
-    const articles = await AdminModel.searchArticles(query);
-    return { articles };
-  }
+}
 
   static async removeReviewer (req, res){
     try {
@@ -215,6 +232,7 @@ class AdminController {
       const { reviewer_id } = req.body;
       await AdminModel.removeReviewer(reviewer_id); 
       const reviewers = await AdminModel.getAllReviewers();
+      console.log(reviewers);
 
       res.render('removeReviewer', {
         successMessage: strings.successMessages.deletedReviewer,
@@ -240,7 +258,7 @@ class AdminController {
       });
     }
   }
-
+  
 }
 
 module.exports = { AdminController };

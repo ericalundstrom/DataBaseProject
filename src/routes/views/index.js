@@ -236,8 +236,6 @@ router.delete('/remove-reviewer', async (req, res) => {
   }
 });
 
-
-
 router.get('/admin/all-articles', (req, res) => {
   const user = req.session.user;
 
@@ -245,11 +243,15 @@ router.get('/admin/all-articles', (req, res) => {
     return res.redirect('/login');
   }
 
+  const year = req.query.year || null;
+
   AdminController.getAllArticles(req, res)
-  .then(({ articles }) => {
+  .then(({ articles, years }) => {
     res.render('allArticles', {
       user,
       articles,
+      years, 
+      year, 
       successMessage: null,
       errorMessage: null,
       searchQuery: ''
@@ -265,6 +267,8 @@ router.get('/admin/all-articles', (req, res) => {
     res.render('allArticles', {
       user,
       articles: [],
+      years: [],
+      year, 
       successMessage: null,
       errorMessage: 'Error fetching articles',
       searchQuery: ''
@@ -280,12 +284,17 @@ router.post('/admin/all-articles', async (req, res) => {
   }
 
   const searchQuery = req.body.query || '';
+  const year = req.query.year || null;
 
+  
   try {
-    const articles = await AdminController.searchArticles(searchQuery);
+
+    const { articles, years } = await AdminController.searchArticles(searchQuery, year);
     res.render('allArticles', {
       user,
       articles,
+      years,
+      year,
       successMessage: null,
       errorMessage: null,
       searchQuery
@@ -294,6 +303,8 @@ router.post('/admin/all-articles', async (req, res) => {
     res.render('allArticles', {
       user,
       articles: [],
+      years: [],
+      year,
       successMessage: null,
       errorMessage: 'Error fetching articles',
       searchQuery
