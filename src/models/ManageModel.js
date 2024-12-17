@@ -39,7 +39,7 @@ class ManageModel {
     } catch (error) {
       throw error;
     } finally {
-      client.end();
+      client.release();
      }
   }
 
@@ -71,7 +71,7 @@ class ManageModel {
 //   } catch (error) {
 //     throw error;
 //   } finally {
-//     client.end();
+//     client.release();
 //   }
 //    }if (req.path === '/add-reviewer') {
 //     try{
@@ -103,7 +103,7 @@ class ManageModel {
 //     } catch (error) {
 //       throw error;
 //     } finally {
-//       client.end();
+//       client.release();
 //     }
 //    }
 // }
@@ -125,7 +125,7 @@ class ManageModel {
     } catch (error) {
       throw error;
     } finally {
-      client.end();
+      client.release();
     }
   }
 

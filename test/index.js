@@ -37,7 +37,7 @@ app.get('/students', async (req, res) => {
             console.log("fungerar ej", err);
             res.status(500).send("Ett fel inträffade");
         }
-        client.end();
+        client.release();
     });
 })
 
@@ -65,7 +65,7 @@ app.post('/add-student', async (req, res) => {
         console.error("Fel vid inmatning i databasen:", err);
         res.status(500).send("Ett serverfel inträffade.");
     } finally {
-        client.end();
+        client.release();
     }
 });
 
@@ -93,7 +93,7 @@ app.delete('/delete-student', async (req, res) => {
         console.error("Fel vid borttagning i databasen:", error);
         res.status(500).send("Ett serverfel inträffade.");
     } finally {
-        client.end();
+        client.release();
     }
 })
 
@@ -133,7 +133,7 @@ app.patch('/change-student', async (req,res) => {
         console.error("Fel vid borttagning i databasen:", error);
         res.status(500).send("Ett serverfel inträffade.");
     } finally {
-        client.end();
+        client.release();
     }
 
 })

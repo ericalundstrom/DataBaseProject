@@ -18,7 +18,7 @@ class AuthorModel {
     } catch (error) {
       throw error;
     } finally {
-      client.end();
+      client.release();
     }
   }
 
@@ -53,7 +53,7 @@ class AuthorModel {
     } catch (error) {
       throw new Error('Error fetching articles by year');
     } finally {
-      client.end();
+      client.release();
     }
   }
 }

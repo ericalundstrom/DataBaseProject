@@ -21,7 +21,7 @@ class ReviewerModel {
     } catch (error) {
       throw new Error('Error fetching articles for the reviewer');
     } finally {
-      client.end();
+      client.release();
     }
   }
 
@@ -46,7 +46,7 @@ class ReviewerModel {
     } catch (error) {
       throw new Error('Error fetching articles for the reviewer');
     } finally {
-      client.end();
+      client.release();
     }
   }
 
@@ -75,7 +75,7 @@ class ReviewerModel {
       await client.query('ROLLBACK');
       throw error;
     } finally {
-      client.end();
+      client.release();
     }
   }
 
@@ -130,7 +130,7 @@ class ReviewerModel {
     } catch (error) {
       throw new Error('Error saving comment to the database');
     } finally {
-      client.end();
+      client.release();
     }
   }
 }
