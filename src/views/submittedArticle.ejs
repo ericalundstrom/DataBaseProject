@@ -36,6 +36,7 @@
         <th>Keywords</th>
         <th>Status</th>
         <th>Submission Date</th>
+        <th>Reviewer Comments</th>
       </tr>
     </thead>
     <tbody>
@@ -52,6 +53,7 @@
           <td><%= article.keywords %></td>
           <td><%= article.article_status %></td>
           <td><%= article.submission_date.toLocaleDateString() %></td>
+          <td><%- article.comment?.replace(/\n/g, '<br>') %></td>
         </tr>
       <% }); %>
     </tbody>
