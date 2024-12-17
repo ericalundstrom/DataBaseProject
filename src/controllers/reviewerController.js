@@ -105,6 +105,25 @@ class ReviewerController {
       });
     }
   }
+
+  static async saveComment(req, res) {
+    const { articleId, reviewerComment } = req.body;
+    const user = req.session.user;
+
+    try {
+      if (!user || !user.user_id) {
+        throw new Error('Unauthorized');
+      }
+
+      const reviewerId = user.user_id;
+
+      await ReviewerModel.saveComment(articleId, reviewerId, reviewerComment);
+
+      res.json({ success: true });
+    } catch (error) {
+      res.json({ success: false, message: error.message });
+    }
+  }
 }
 
 module.exports = { ReviewerController };

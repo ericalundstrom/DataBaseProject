@@ -115,6 +115,24 @@ class ReviewerModel {
       throw new Error(`Error while updating article status for article_id: ${article_id} - ${error.message}`);
     }
   }
+
+  static async saveComment(articleId, reviewerId, comment) {
+    const client = await connectDatabase();
+
+    try {
+      const query = `
+        UPDATE Article_Reviewers_Table
+        SET comment = $1
+        WHERE article_id = $2 AND reviewer_id = $3;
+      `;
+      const values = [comment, articleId, reviewerId];
+      await client.query(query, values);
+    } catch (error) {
+      throw new Error('Error saving comment to the database');
+    } finally {
+      client.end();
+    }
+  }
 }
 
 module.exports = { ReviewerModel };
