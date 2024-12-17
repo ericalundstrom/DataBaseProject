@@ -12,7 +12,7 @@
   
   <form method="GET" action="/admin/all-articles">
     <label for="year">Filter by Year:</label>
-    <select name="year" id="year" onchange="this.form.submit()">
+    <select name="year" id="year">
       <option value="">All Years</option>
      <% const yearsArray = Array.isArray(years) ? years : (years || []); %>
       <% for (let index = 0; index < yearsArray.length; index++) { %>
@@ -22,22 +22,16 @@
         </option>
       <% } %>
     </select>
-  </form>  
-
-  <form method="POST" action="/admin/all-articles" id="searchForm">
-    <input type="hidden" name="year" id="hiddenYear" value="<%= year || '' %>">
     <input type="text" name="query" placeholder="Search by title, author, year, type, or status" value="<%= searchQuery || '' %>" />
     <button type="submit">Search</button>
-  </form>
+  </form>  
 
   <script>
-    // Synkronisera dolda året med dropdown
-    const yearDropdown = document.getElementById('year');
-    const hiddenYearInput = document.getElementById('hiddenYear');
-  
-    yearDropdown.addEventListener('change', () => {
-      hiddenYearInput.value = yearDropdown.value;
-    });
+
+    function submitForm() {
+     console.log(document.getElementById('filterForm'));
+     document.getElementById('filterForm').submit();
+    }
   </script>
 
   <table>

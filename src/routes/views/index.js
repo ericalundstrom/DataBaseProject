@@ -243,7 +243,8 @@ router.get('/admin/all-articles', (req, res) => {
     return res.redirect('/login');
   }
 
-  const year = req.query.year || null;
+  const searchQuery = req.query.query;
+  const year = req.query.year;
 
   AdminController.getAllArticles(req, res)
   .then(({ articles, years }) => {
@@ -254,7 +255,7 @@ router.get('/admin/all-articles', (req, res) => {
       year, 
       successMessage: null,
       errorMessage: null,
-      searchQuery: ''
+      searchQuery
     });
   })
   .catch((error) => {
@@ -274,6 +275,7 @@ router.get('/admin/all-articles', (req, res) => {
       searchQuery: ''
     });
   });
+
 })
 
 router.post('/admin/all-articles', async (req, res) => {

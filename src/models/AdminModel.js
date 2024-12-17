@@ -237,7 +237,6 @@ class AdminModel {
   
     static async searchArticles(searchQuery, year) {
 
-        console.log(searchQuery, year);
         const client = await connectDatabase();
     
         try {

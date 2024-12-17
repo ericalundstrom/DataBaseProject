@@ -56,21 +56,37 @@ class AdminController {
             throw new Error('unauthorized');
         }
 
-        const year = req.query.year || null; 
-        const articles = await AdminModel.getAllArticles(year);
-        const years = await AdminModel.getArticleYears();
-        
-        return { 
-            articles, 
-            years, 
-            searchQuery: req.query.query || '' 
-        };
+    const years = await AdminModel.getArticleYears();
+
+    const year = req.query.year || null; 
+    const query = req.query.query ? req.query.query.trim() : null;
+
+    const isQueryEmpty = !query;
+    const isYearNull = !year;
+
+    let articles;
+    if (isQueryEmpty && isYearNull) {
+      articles = await AdminModel.getAllArticles();
+    } else if (!isQueryEmpty && isYearNull) {
+      articles = await AdminModel.searchArticles(query);
+    } else if (isQueryEmpty && !isYearNull) {
+      articles = await AdminModel.getAllArticles(year);
+    } else {
+      articles = await AdminModel.searchArticles(query, year);
+    }
+
+    return { articles, years, searchQuery: query || '', selectedYear: year || '' };
+
     } catch (error) {
       let errorMessage = strings.errorMessages.databaseError;
       res.render('allArticles', {
         articles: [],
+        years: [],
+        year,
+        searchQuery: req.query.query || '',
+        selectedYear: req.query.year || '',
         successMessage: null,
-        errorMessage
+        errorMessage: strings.errorMessages.databaseError
       });
     }
   }
