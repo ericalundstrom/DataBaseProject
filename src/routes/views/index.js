@@ -216,7 +216,7 @@ router.get('/admin/remove-reviewer', (req, res) => {
 
 router.delete('/remove-reviewer', async (req, res) => {
   try {
-    const { reviewer_id } = req.body; 
+    const { reviewer_id } = req.body;
     if (!reviewer_id) {
       return res.status(400).render('removeReviewer', {
         errorMessage: 'Reviewer ID is missing',
@@ -251,8 +251,8 @@ router.get('/admin/all-articles', (req, res) => {
     res.render('allArticles', {
       user,
       articles,
-      years, 
-      year, 
+      years,
+      year,
       successMessage: null,
       errorMessage: null,
       searchQuery
@@ -269,7 +269,7 @@ router.get('/admin/all-articles', (req, res) => {
       user,
       articles: [],
       years: [],
-      year, 
+      year,
       successMessage: null,
       errorMessage: 'Error fetching articles',
       searchQuery: ''
@@ -288,7 +288,7 @@ router.post('/admin/all-articles', async (req, res) => {
   const searchQuery = req.body.query || '';
   const year = req.query.year || null;
 
-  
+
   try {
 
     const { articles, years } = await AdminController.searchArticles(searchQuery, year);
@@ -314,6 +314,4 @@ router.post('/admin/all-articles', async (req, res) => {
   }
 });
 
-
 module.exports = router;
-

@@ -1,4 +1,5 @@
 const { ReviewerModel } = require('../models/ReviewerModel.js');
+const strings = require('../locales/strings.js');
 
 class ReviewerController {
   static async getArticles(req, res) {
@@ -20,7 +21,7 @@ class ReviewerController {
           filter,
           articles,
           successMessage: null,
-          errorMessage: articles.length === 0 ? 'No articles found for the current year.' : null,
+          errorMessage: articles.length === 0 ? strings.errorMessages.noArticlesFound : null,
         });
       })
     } catch (error) {
@@ -92,7 +93,7 @@ class ReviewerController {
           filter,
           articles,
           successMessage: null,
-          errorMessage: articles.length === 0 ? 'No articles found for the current year.' : null,
+          errorMessage: articles.length === 0 ? strings.errorMessages.noArticlesFound : null,
         });
       })
     } catch (error) {

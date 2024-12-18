@@ -143,29 +143,6 @@ class AdminModel {
         }
     }
 
-    static async getLatestSubmissionPeriod() {
-        const client = await connectDatabase();
-
-        try {
-            const query = `
-                SELECT start_date, end_date, year
-                FROM submissionperiods
-                WHERE EXTRACT(YEAR FROM start_date) = EXTRACT(YEAR FROM CURRENT_DATE)
-                ORDER BY start_date DESC
-                LIMIT 1;
-            `;
-
-            const result = await client.query(query);
-
-            return result.rows[0] || null;
-        } catch (error) {
-            console.error('Error fetching active submission period:', error);
-            throw new Error('Could not fetch active submission period');
-        } finally {
-            client.release();
-        }
-    }
-
     static async generateArticleId(client) {
         try {
           const result = await client.query('SELECT MAX(period_id) AS max_id FROM submissionperiods');

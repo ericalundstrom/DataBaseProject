@@ -1,13 +1,9 @@
 const { ManageModel } = require('../models/ManageModel.js');
 const strings = require('../locales/strings.js');
-const { query } = require('express');
-const { AdminController } = require('./adminController.js');
 
 class ManageController {
   static async register(req, res) {
-
     if (req.path === '/register') {
-
       try {
         let role = 'author';
 
@@ -41,7 +37,6 @@ class ManageController {
         res.render('index', { successMessage: null, errorMessage });
       }
     } else if (req.path === '/add-reviewer') {
-
       try {
         let role = 'reviewer';
         const { first_name, last_name, email, phone, affiliation, password } = req.body;

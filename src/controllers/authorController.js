@@ -1,8 +1,44 @@
 const { AuthorModel } = require('../models/AuthorModel.js');
-const { AdminModel } = require('../models/AdminModel.js');
 const strings = require('../locales/strings.js');
 
 class AuthorController {
+  static async getSubmissionPeriod(req, res) {
+    try {
+      const user = req.session.user;
+
+      if (!user || !user.user_id) {
+        throw new Error('unauthorized');
+      }
+
+      const submissionPeriod = await AuthorModel.getLatestSubmissionPeriod();
+
+      function formatDate(date) {
+        const d = new Date(date);
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+
+      const submissionStartDate = submissionPeriod?.start_date ? formatDate(submissionPeriod.start_date) : null;
+      const submissionEndDate = submissionPeriod?.end_date ? formatDate(submissionPeriod.end_date) : null;
+
+      return { submissionStartDate, submissionEndDate };
+    } catch (error) {
+      let errorMessage;
+
+      switch (errorMessage) {
+        case 'noActiveSubmissionPeriod':
+          errorMessage = strings.errorMessages.noActiveSubmissionPeriod;
+          break;
+        default:
+          errorMessage = strings.errorMessages.databaseError;
+          break;
+      }
+      return { submissionStartDate: null, submissionEndDate: null };
+    }
+  }
+
   static async createArticle(req, res) {
     try {
       const user = req.session.user;
@@ -42,7 +78,7 @@ class AuthorController {
       const keywordArray = keywords.split(',').map((kw) => kw.trim()).filter(Boolean);
 
       if (keywordArray.length > 4) {
-      throw new Error('moreThanFourKeywords');
+        throw new Error('moreThanFourKeywords');
       }
 
       const sanitizedKeywords = keywordArray.join(',');
@@ -93,7 +129,7 @@ class AuthorController {
     }
   }
 
-  static async submittedArticle(req, res) {
+  static async getSubmittedArticle(req, res) {
     try {
       const user = req.session.user;
 
@@ -129,43 +165,6 @@ class AuthorController {
         successMessage: null,
         errorMessage
       });
-    }
-  }
-
-  static async getSubmissionPeriod(req, res) {
-    try {
-      const user = req.session.user;
-
-      if (!user || !user.user_id) {
-        throw new Error('unauthorized');
-      }
-
-      const submissionPeriod = await AdminModel.getLatestSubmissionPeriod();
-
-      function formatDate(date) {
-        const d = new Date(date);
-        const year = d.getFullYear();
-        const month = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        return `${year}-${month}-${day}`;
-      }
-
-      const submissionStartDate = submissionPeriod?.start_date ? formatDate(submissionPeriod.start_date) : null;
-      const submissionEndDate = submissionPeriod?.end_date ? formatDate(submissionPeriod.end_date) : null;
-
-      return { submissionStartDate, submissionEndDate };
-    } catch (error) {
-      let errorMessage;
-
-      switch (errorMessage) {
-        case 'noActiveSubmissionPeriod':
-          errorMessage = strings.errorMessages.noActiveSubmissionPeriod;
-          break;
-        default:
-          errorMessage = strings.errorMessages.databaseError;
-          break;
-      }
-      return { submissionStartDate: null, submissionEndDate: null };
     }
   }
 }
