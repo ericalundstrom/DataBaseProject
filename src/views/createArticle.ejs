@@ -26,36 +26,39 @@
     <p>Please simply fill in the form below and click the "Submit" button to submit the article.</p>
 
     <% if (submissionStartDate && submissionEndDate) { %>
-        <p class="submission-date">You can only submit article from <%= submissionStartDate %> to <%= submissionEndDate %>.</p>
+        <p class="submission-date">You can only submit articles from <%= submissionStartDate %> to <%= submissionEndDate %>.</p>
     <% } %>
 
     <form action="/author/create-article" method="POST">
         <div>
-            <label for="articleType">Article Type:</label>
+            <label for="articleType">Article Type:</label><br>
             <select id="articleType" name="article_type" required>
                 <option value="short article">short article</option>
                 <option value="full article">full article</option>
                 <option value="poster">poster</option>
             </select>
+            <br>
         </div>
 
         <div>
-            <label for="title">Title of the Article:</label>
-            <input type="text" id="title" name="title" required maxlength="255">
+            <label for="title">Title of the Article:</label><br>
+            <input type="text" id="title" name="title" required maxlength="255""><br>
         </div>
 
         <div>
-            <label for="keywords">Keywords (up to 4 words, comma-separated):</label>
-            <input type="text" id="keywords" name="keywords" required maxlength="255">
+            <label for="keywords">Keywords (up to 4 keywords, please separate the keywords with comma):</label><br>
+            <input type="text" id="keywords" name="keywords" required maxlength="255"><br>
         </div>
 
         <div>
-            <label for="articleText">Text of the Article (max 1,000,000,000 characters):</label>
-            <textarea id="article-text" name="content" required maxlength="1000000000"></textarea>
+            <label for="articleText">Text of the Article (max 1,000,000,000 characters):</label><br>
+            <textarea id="article-text" name="content" required maxlength="1000000000"></textarea><br>
         </div>
 
+        <br>
         <button type="submit">Submit</button>
     </form>
+    <br>
 
     <% if (errorMessage || successMessage) { %>
         <div class="create-article-message <%= errorMessage ? 'error-message' : 'success-message' %>">

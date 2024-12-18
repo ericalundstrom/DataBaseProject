@@ -21,7 +21,7 @@ class ReviewerModel {
     } catch (error) {
       throw new Error('Error fetching articles for the reviewer');
     } finally {
-      client.end();
+      client.release();
     }
   }
 
@@ -46,7 +46,7 @@ class ReviewerModel {
     } catch (error) {
       throw new Error('Error fetching articles for the reviewer');
     } finally {
-      client.end();
+      client.release();
     }
   }
 
@@ -61,6 +61,7 @@ class ReviewerModel {
         SET decision = $1
         WHERE article_id = $2 AND reviewer_id = $3;
       `;
+
       const values = [action, article_id, reviewer_id];
       await client.query(query, values);
 
@@ -75,7 +76,7 @@ class ReviewerModel {
       await client.query('ROLLBACK');
       throw error;
     } finally {
-      client.end();
+      client.release();
     }
   }
 
@@ -100,6 +101,7 @@ class ReviewerModel {
         FROM Article_Reviewers_Table
         WHERE article_id = $1;
       `;
+
       const checkResult = await client.query(checkQuery, [article_id]);
       const { total_reviewers, accepted_reviewers } = checkResult.rows[0];
 
@@ -109,10 +111,30 @@ class ReviewerModel {
           SET article_status = 'accepted'
           WHERE article_id = $1;
         `;
+
         await client.query(updateQuery, [article_id]);
       }
     } catch (error) {
       throw new Error(`Error while updating article status for article_id: ${article_id} - ${error.message}`);
+    }
+  }
+
+  static async saveComment(articleId, reviewerId, comment) {
+    const client = await connectDatabase();
+
+    try {
+      const query = `
+        UPDATE Article_Reviewers_Table
+        SET comment = $1
+        WHERE article_id = $2 AND reviewer_id = $3;
+      `;
+
+      const values = [comment, articleId, reviewerId];
+      await client.query(query, values);
+    } catch (error) {
+      throw new Error('Error saving comment to the database');
+    } finally {
+      client.release();
     }
   }
 }

@@ -49,7 +49,7 @@ async function createRemoveReviewerFunctionAndTrigger() {
     await client.query('ROLLBACK');
     throw error;
   } finally {
-    client.end();
+    client.release();
   }
 }
 
@@ -57,8 +57,8 @@ async function getArticlesFunctionAndTrigger() {
     const client = await connectDatabase();
     try {
         const checkViewQuery = `
-            SELECT * 
-            FROM information_schema.views 
+            SELECT *
+            FROM information_schema.views
             WHERE table_name = 'available_articles_for_review'
         `;
         const viewResult = await client.query(checkViewQuery);
@@ -66,23 +66,23 @@ async function getArticlesFunctionAndTrigger() {
         if (viewResult.rows.length === 0) {
             const createViewQuery = `
                 CREATE VIEW available_articles_for_review AS
-                SELECT 
-                    articles.article_id, 
-                    articles.title, 
-                    articles.content, 
-                    articles.article_type, 
-                    articles.keywords, 
-                    articles.article_status, 
-                    articles.submission_date, 
+                SELECT
+                    articles.article_id,
+                    articles.title,
+                    articles.content,
+                    articles.article_type,
+                    articles.keywords,
+                    articles.article_status,
+                    articles.submission_date,
                     submissionperiods.end_date,
                     article_reviewers_table.article_id AS reviewer_assigned
-                FROM 
+                FROM
                     articles
-                JOIN 
+                JOIN
                     submissionperiods ON articles.year = submissionperiods.year
-                LEFT JOIN 
+                LEFT JOIN
                     article_reviewers_table ON articles.article_id = article_reviewers_table.article_id
-                WHERE 
+                WHERE
                     submissionperiods.end_date < CURRENT_DATE
                     AND article_reviewers_table.article_id IS NULL;
             `;
@@ -95,7 +95,7 @@ async function getArticlesFunctionAndTrigger() {
     } catch (error) {
         throw new Error(`Error fetching articles: ${error.message}`);
     } finally {
-        client.end();
+        client.release();
     }
 }
 

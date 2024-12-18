@@ -1,5 +1,4 @@
 const { connectDatabase } = require('../utils/database.js');
-const strings = require('../locales/strings.js');
 
 class ManageModel {
   static async register(first_name, last_name, email, phone, affiliation, role, password) {
@@ -36,11 +35,9 @@ class ManageModel {
       await client.query('ROLLBACK');
       throw error;
     } finally {
-      client.end();
+      client.release();
      }
   }
-
-
 
   static async login(email) {
     const client = await connectDatabase();
@@ -59,7 +56,7 @@ class ManageModel {
     } catch (error) {
       throw error;
     } finally {
-      client.end();
+      client.release();
     }
   }
 

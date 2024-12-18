@@ -10,6 +10,7 @@
     <script src="/welcomeReviewer.js" defer></script>
 </head>
 <body>
+
     <nav>
         <div>
             <a href="/">Logout</a>
@@ -19,76 +20,88 @@
     <div class="contentReviewer">
         <h2>Welcome reviewer, <%= user.first_name %> <%= user.last_name %>!</h2>
         <p>Here you can see all articles assigned to you for review.</p>
+        <p>Make your decisions by clicking on the "Accept" or "Reject" buttons under "My Review Decision".</p>
+        <p>To leave comments, click on the article title.</p>
 
-        <form method="POST" action="/reviewer/select-filter">
-            <select name="filter" onchange="this.form.submit()">
-                <option
-                    value="all-assigned"
-                    <%= filter === 'all-assigned' ? 'selected' : '' %>
-                >
-                    All assigned articles
-                </option>
-                <option
-                    value="unreviewed"
-                    <%= filter === 'unreviewed' ? 'selected' : '' %>
-                >
-                    Unreviewed articles
-                </option>
-            </select>
-        </form>
+</div>
+<form method="POST" action="/reviewer/select-filter">
+    <select name="filter" onchange="this.form.submit()">
+        <option
+            value="all-assigned"
+            <%= filter === 'all-assigned' ? 'selected' : '' %>
+        >
+            All assigned articles
+        </option>
+        <option
+            value="unreviewed"
+            <%= filter === 'unreviewed' ? 'selected' : '' %>
+        >
+            Unreviewed articles
+        </option>
+    </select>
+</form>
 
-        <table>
-            <thead>
+<table>
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Article Type</th>
+        <th>Keywords</th>
+        <th>Status</th>
+        <th>Submission Date</th>
+        <th>My Review Decision</th>
+    </tr>
+    </thead>
+    <tbody>
+        <% articles.forEach(function(article) { %>
             <tr>
-                <th>Title</th>
-                <th>Article Type</th>
-                <th>Keywords</th>
-                <th>Status</th>
-                <th>Submission Date</th>
-                <th>My Review Decision</th>
+                <td>
+                    <a href="#" class="article-title" data-title="<%= article.title %>" data-content="<%= article.content %>" data-article-id="<%= article.article_id %>">
+                        <%= article.title %>
+                    </a>
+                </td>
+                <td><%= article.article_type %></td>
+                <td><%= article.keywords %></td>
+                <td><%= article.article_status %></td>
+                <td><%= article.submission_date.toLocaleDateString() %></td>
+                <td>
+                    <% if (article.decision === 'accepted' || article.decision === 'rejected') { %>
+                        <%= article.decision %>
+                    <% } else if (article.decision === 'under review' || !article.decision) { %>
+                        <form method="POST" action="/reviewer/review">
+                            <input type="hidden" name="article_id" value="<%= article.article_id %>">
+                            <input type="hidden" name="filter" value="<%= filter %>">
+                            <select name="action" onchange="this.form.submit()">
+                                <option value="">Please select</option>
+                                <option value="accepted">Accept</option>
+                                <option value="rejected">Reject</option>
+                            </select>
+                        </form>
+                    <% } else { %>
+                        Invalid decision
+                    <% } %>
+                </td>
             </tr>
-            </thead>
-            <tbody>
-                <% articles.forEach(function(article) { %>
-                    <tr>
-                        <td>
-                            <a href="#" class="article-title" data-title="<%= article.title %>" data-content="<%= article.content %>">
-                                <%= article.title %>
-                            </a>
-                        </td>
-                        <td><%= article.article_type %></td>
-                        <td><%= article.keywords %></td>
-                        <td><%= article.article_status %></td>
-                        <td><%= article.submission_date.toLocaleDateString() %></td>
-                        <td>
-                            <% if (article.decision === 'accepted' || article.decision === 'rejected') { %>
-                                <%= article.decision %>
-                            <% } else if (article.decision === 'under review' || !article.decision) { %>
-                                <form method="POST" action="/reviewer/review">
-                                    <input type="hidden" name="article_id" value="<%= article.article_id %>">
-                                    <input type="hidden" name="filter" value="<%= filter %>">
-                                    <select name="action" onchange="this.form.submit()">
-                                        <option value="">Please select</option>
-                                        <option value="accepted">Accept</option>
-                                        <option value="rejected">Reject</option>
-                                    </select>
-                                </form>
-                            <% } else { %>
-                                Invalid decision
-                            <% } %>
-                        </td>
-                    </tr>
-                <% }); %>
-            </tbody>
-        </table>
+        <% }); %>
+    </tbody>
+</table>
 
-        <div id="article-modal">
-            <div class="modal-content">
-                <span class="modal-close" id="closeModal">&times;</span>
-                <div class="modal-header" id="modalTitle"></div>
-                <div id="modalContent"></div>
-            </div>
-        </div>
+<div id="article-modal">
+    <div class="modal-content">
+        <form id="commentForm">
+            <input type="hidden" name="articleId" id="articleId" value="" />
+
+            <span class="modal-close" id="closeModal">&times;</span>
+            <div class="modal-header" id="modalTitle"></div>
+            <div id="modalContent"></div>
+            <br><br>
+
+            <label for="reviewerComment">Leave a comment:</label><br><br>
+            <textarea name="reviewerComment" id="reviewerComment" rows="4" cols="60"></textarea>
+            <br>
+            <button id="saveCommentButton" type="submit">Save</button>
+        </form>
     </div>
+</div>
 </body>
 </html>
