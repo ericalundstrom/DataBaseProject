@@ -99,6 +99,7 @@ async function getArticlesFunctionAndTrigger() {
     }
 }
 
+
 module.exports = {
   createRemoveReviewerFunctionAndTrigger, getArticlesFunctionAndTrigger
 };

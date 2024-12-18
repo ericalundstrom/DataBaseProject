@@ -4,11 +4,24 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MeetFlow - Articles</title>
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/css/index.css">
+  <link rel="stylesheet" href="/css/admin/allArticles.css">
   <script src="/allArticles.js" defer></script>
 </head>
 <body>
-  <h1>Submitted Articles</h1>
+  <nav>
+    <div>
+        <a href="/admin/create-submission">Create Submission</a>
+        <a href="/admin/assign-reviewer">Assign Reviewer</a>
+        <a href="/admin/all-articles">See All Articles</a>
+        <a href="/admin/add-reviewer">Add Reviewer</a>
+        <a href="/admin/remove-reviewer">Remove Reviewer</a>
+        <a href="/">Logout</a>
+    </div>
+
+  </nav>
+
+  <h2>Submitted Articles</h2>
   
   <form method="GET" action="/admin/all-articles">
     <label for="year">Filter by Year:</label>
@@ -26,12 +39,6 @@
     <button type="submit">Search</button>
   </form>  
 
-  <script>
-
-    function submitForm() {
-     document.getElementById('filterForm').submit();
-    }
-  </script>
 
   <table>
     <thead>
@@ -55,7 +62,7 @@
                 <a href="#" class="article-title"
                   data-title="<%= articlesArray[i].title %>"
                   data-content="<%= articlesArray[i].content %>"
-                  data-author="'<%= articlesArray[i].full_name %>">
+                  data-author="<%= articlesArray[i].full_name %>">
                   <%= articlesArray[i].title %>
                 </a>
               </td>

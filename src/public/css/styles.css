@@ -1,3 +1,16 @@
+
+body{
+  margin: 0;
+  font-family: "Rozha One", serif;
+  font-weight: normal;
+}
+
+.rozha-one-regular {
+  font-family: "Rozha One", serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 .error-message, .success-message {
   color: red;
   margin-top: 20px;
@@ -5,15 +18,19 @@
   font-weight: bold;
 }
 
-.login-button-on-register-page, .register-button-on-login-page {
+/* .login-button-on-register-page, .register-button-on-login-page {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-top: 50px;
-}
+} */
 
 a {
   text-decoration: none;
+  color: black;
+}
+span{
+  font-weight: bolder;
 }
 
 /* submittedAarticles */

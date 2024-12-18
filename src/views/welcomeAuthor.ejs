@@ -5,9 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MeetFlow</title>
     <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/welcome.css">
 </head>
 <body>
-    <h1>Welcome author, <%= user.first_name %> <%= user.last_name %>!</h1>
+  <nav>
+    <div>
+        <a href="/author/create-article">Create article</a>
+        <a href="/author/submitted-article">Submitted article</a>
+        <a href="/">Logout</a>
+    </div>
+
+  </nav>
+  <div class="content">
+    <h2>Welcome author, <%= user.first_name %> <%= user.last_name %>!</h2>
     <p>Click on different buttons to see different views.</p>
 
     <div class="button-container">
@@ -18,10 +29,7 @@
         <a href="/author/submitted-article">
           <button type="button" class="submitted-article">Submitted article</button>
         </a>
-
-        <a href="/">
-          <button type="button" class="logout-button">Logout</button>
-        </a>
     </div>
+  </div>
 </body>
 </html>

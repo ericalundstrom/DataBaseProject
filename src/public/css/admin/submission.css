@@ -1,0 +1,39 @@
+h2{
+    font-weight: normal;
+  font-size: 2.6vw;
+  margin: 5%;
+}
+
+.button-container a{
+    width: 20vw;
+}
+
+.button-container button{
+    width: 100%;
+}
+
+.content p {
+    color: black;
+    margin: -4% 0 4% 5%
+}
+
+form{
+    width: 40%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 4%;
+  gap: 15px;
+}
+
+form div{
+    width: 100%;
+}
+form button{
+    width: 100%;
+}
+
+.go-home{
+    margin-left: 4%;
+  width: 10%;
+  margin-top: 5%;
+}

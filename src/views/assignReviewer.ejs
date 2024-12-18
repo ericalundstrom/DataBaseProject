@@ -4,15 +4,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/AssignReviewer.css">
+    <link rel="stylesheet" href="/css/admin/AssignReviewer.css">
+    <link rel="stylesheet" href="/css/index.css">
     <script src="/assign-reviewer.js" defer></script>
     <title>MeetFlow - Assign Reviewer</title>
 </head>
 <body>
-    <div>Assign Reviewer</div>
+  <nav>
+    <div>
+        <a href="/admin/create-submission">Create Submission</a>
+        <a href="/admin/assign-reviewer">Assign Reviewer</a>
+        <a href="/admin/all-articles">See All Articles</a>
+        <a href="/admin/add-reviewer">Add Reviewer</a>
+        <a href="/admin/remove-reviewer">Remove Reviewer</a>
+        <a href="/">Logout</a>
+    </div>
+
+  </nav>
+
+  <div class="content">
+    <h2>Assign Reviewer</h2>
 
     <div id="reviewers">
-      <h3>Reviewers can get max 2 articles assigned to him or her.</h3>
+      <p>Reviewers can get max 2 articles assigned to him or her.</p>
       <p>See list over the available reviewers in drop down menu </p>
     </div>
 
@@ -84,5 +98,6 @@
             <p><%= errorMessage || successMessage %></p>
         </div>
     <% } %>
+      </div>
 </body>
 </html>

@@ -10,11 +10,13 @@ class AdminModel {
         try{
 
             const existingSubmission = await this.checkSubmissionExistsForYear(client, year);
+            console.log(existingSubmission);
             if (existingSubmission) {
                 throw new Error('submissionExistsForYear');
             }
 
             const newSubmissionId = await this.generateArticleId(client);
+            console.log(newSubmissionId);
             const query = 'INSERT INTO submissionperiods (period_id, start_date, end_date, year) VALUES ($1, $2, $3, $4)';
             const values = [newSubmissionId, start_date, end_date, year];
 
@@ -29,6 +31,17 @@ class AdminModel {
         }
     }
 
+    static async checkSubmissionExistsForYear(client, year) {
+        try {
+            const query = 'SELECT * FROM submissionperiods WHERE year = $1';
+            const values = [year];
+            const result = await client.query(query, values);
+            return result.rows.length > 0; // Returnerar true om det finns en period för året
+        } catch (error) {
+            console.error('Error checking for existing submission period:', error);
+            throw new Error('Could not verify existing submission period');
+        }
+    }
     static async getAllArticles (year){
         const client = await connectDatabase();
 

@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MeetFlow - Login</title>
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/index.css">
     <script src="/login.js" defer></script>
 </head>
 <body>
-    <h1>User Login</h1>
+    <main>
+        <div id="content">
+    <h1> Login</h1>
 
     <form action="/manage/login" method="POST">
         <label for="email">Email:</label>
@@ -28,9 +31,9 @@
 
     <div class="register-button-on-login-page">
       <p>Don't have an account yet?</p>
-      <a href="/">
-          <button type="button" class="register-button">Register</button>
-      </a>
+      <a href="/register"> Register <span>here</span></a>
     </div>
+</div>
+</main>
 </body>
 </html>

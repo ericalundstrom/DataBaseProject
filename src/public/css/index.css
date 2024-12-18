@@ -1,0 +1,137 @@
+@font-face {
+    font-family: Ubuntu;
+    src: url('/font/Ubuntu/Ubuntu-Regular.ttf');
+}
+
+body{
+    margin: 0;
+    font-family: Ubuntu;
+}
+
+main{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+}
+
+#content{
+    border-radius: 10px;
+    width: 30%;
+ min-height: 55%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #f1f1e1;
+    padding: 2vw;
+}
+#welcome h2{
+    font-weight: normal;
+  font-size: 2.6vw;
+  margin: 10% 5% 0% 5%;
+}
+
+#welcome h3{
+    margin-top: 0;
+    font-size: 1.2vw;
+    font-weight: lighter;
+    padding: 4% 8% 0% 8%;
+}
+#welcomep{
+margin: 0 0 2% 0;
+}
+.login-button, .register-button{
+    width: 90%;
+}
+button{
+    padding: 1vw 0vw;
+    background-color: transparent;
+    border: 1px solid black;
+    border-radius: 10px;
+    font-size: 1.2vw;
+    transition-duration: 1s;
+    transition-property: background-color;
+    margin: 1vw;
+    font-family: Ubuntu;
+}
+
+button:hover{
+    background-color: #b1b1a4;
+}
+label{
+    font-size: 1vw;
+}
+
+input{
+    width: 98%;
+  height: 2vw;
+  margin-top: 1%;
+  border-radius: 2px;
+  border: 1px solid #afafaf;
+}
+form{
+    text-align: left;
+
+}
+
+form button{
+    width: 100%;
+    margin: 0;
+    margin: 1vw 0vw;
+}
+
+
+nav {
+    padding: 1rem 0rem;
+    background-color: #222831;
+    color: #fff;
+    font-size: 1vw;
+    display: flex; /* Använd Flexbox för att hantera element på en rad */
+    gap: 30px; /* Mellanrum mellan länkarna och paragrafen */
+    align-items: left;
+  justify-content: space-between;  }
+  
+  nav a{
+    color: white;
+  text-decoration: none;
+  padding: 0px 10px;
+  margin: 0 20px;
+  position: relative;
+  }
+  a::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px; /* Höjden på linjen */
+    background-color: white; /* Färg på linjen */
+    transition: width 0.6s ease; /* Effekt för att bredda linjen */
+  }
+  
+  a:hover::after {
+    width: 100%; /* Linjen växer till 100% vid hover */
+  }
+  
+  nav p {
+    margin: 0; 
+    color: white; 
+    font-size: 1vw;
+    margin-right: 20px;
+  }
+
+  .error-message, .success-message {
+    color: red;
+    margin-top: 20px;
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 4%;
+  }
+
+  option{
+    font-family: Ubuntu;
+  }

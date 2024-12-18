@@ -12,6 +12,10 @@ router.get('/login', (req, res) => {
   res.render('login', { successMessage: null, errorMessage: null });
 });
 
+router.get('/register', (req, res) =>{
+  res.render('register', { successMessage: null, errorMessage: null });
+})
+
 router.get('/author/welcome-author', (req, res) => {
   const user = req.session.user;
 
@@ -169,6 +173,10 @@ router.get('/admin/assign-reviewer', (req, res) => {
 
 router.get('/admin/create-submission', (req, res) => {
   const user = req.session.user;
+
+  if (!user) {
+    return res.redirect('/login');
+  }
 
   res.render('createSubmission', {
     user,

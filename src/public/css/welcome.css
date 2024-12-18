@@ -1,0 +1,26 @@
+
+
+h2{
+    font-weight: normal;
+  font-size: 2.6vw;
+  margin: 5%;
+}
+
+.button-container{
+    display: flex;
+  flex-direction: column;
+  margin-left: 4%;
+}
+
+.button-container a{
+    width: 20vw;
+}
+
+.button-container button{
+    width: 100%;
+}
+
+.content p {
+    color: black;
+    margin: -4% 0 4% 5%
+}

@@ -5,18 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MeetFlow - Create Submission</title>
-    <script src="/create-submission.js" defer></script>
+    <script src="/css/create-submission.js" defer></script>
+    <!-- <link rel="stylesheet" href="/css/styles.css"> -->
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/admin/submission.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 </head>
 <body>
 
+  <nav>
     <div>
-        <h1>Skapa Submission Period</h1>
+        <a href="/admin/create-submission">Create Submission</a>
+        <a href="/admin/assign-reviewer">Assign Reviewer</a>
+        <a href="/admin/all-articles">See All Articles</a>
+        <a href="/admin/add-reviewer">Add Reviewer</a>
+        <a href="/admin/remove-reviewer">Remove Reviewer</a>
+        <a href="/">Logout</a>
+    </div>
+  </nav>
+
+  <div class="content">
+
+    <div>
+        <h2>Create Submission Period</h2>
     
         <form action="/admin/create-submission" method="POST">
     
           <div>
-            <label for="startDate">Startdatum:</label>
+            <label for="startDate">Start date:</label>
             <input
               type="text"
               id="startDate"
@@ -26,7 +42,7 @@
           </div>
     
           <div>
-            <label for="endDate">Slutdatum:</label>
+            <label for="endDate">End date:</label>
             <input
               type="text"
               id="endDate"
@@ -35,7 +51,7 @@
             />
           </div>
     
-          <button type="submit">Skapa Submission Period</button>
+          <button type="submit">Create</button>
         </form>
     
       </div>
@@ -63,5 +79,6 @@
         <p><%= errorMessage || successMessage %></p>
     </div>
 <% } %>
+  </div>
 </body>
 </html>

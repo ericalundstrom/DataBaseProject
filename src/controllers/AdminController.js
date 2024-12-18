@@ -4,6 +4,11 @@ const strings = require('../locales/strings.js');
 class AdminController {
   static async createSubmission(req, res) {
     try {
+      const user = req.session.user;
+
+      if (!user || !user.user_id) {
+          throw new Error('unauthorized');
+      }
 
       const {start_date, end_date } = req.body;
 
@@ -19,8 +24,10 @@ class AdminController {
       }
 
       const year = startYear;
+      console.log(start_date, end_date, year);
 
-      await AdminModel.createSubmission(start_date, end_date, year);
+      const result = await AdminModel.createSubmission(start_date, end_date, year);
+      console.log(result);
 
       res.render('createSubmission', { successMessage: strings.successMessages.submissionCreated, errorMessage: null });
     } catch (error) {
@@ -44,7 +51,7 @@ class AdminController {
           break;
       }
 
-      res.render('createSubmission', { successMessage: null, errorMessage });
+      res.render('createSubmission', { successMessage: null, errorMessage});
     }
   }
 
