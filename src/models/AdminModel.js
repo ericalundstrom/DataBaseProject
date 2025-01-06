@@ -36,7 +36,7 @@ class AdminModel {
             const query = 'SELECT * FROM submissionperiods WHERE year = $1';
             const values = [year];
             const result = await client.query(query, values);
-            return result.rows.length > 0; // Returnerar true om det finns en period för året
+            return result.rows.length > 0; 
         } catch (error) {
             console.error('Error checking for existing submission period:', error);
             throw new Error('Could not verify existing submission period');
@@ -99,8 +99,7 @@ class AdminModel {
                 ORDER BY year DESC;
             `;
             const result = await client.query(query);
-            // console.log("år" + result.rows);
-            return result.rows; // Returnera en lista med år
+            return result.rows;
         } catch (error) {
             console.error('Error fetching article years:', error);
             throw new Error('Error fetching years');

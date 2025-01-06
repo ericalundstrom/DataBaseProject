@@ -47,7 +47,7 @@ class ManageController {
 
         await ManageModel.register(first_name, last_name, email, phone, affiliation, role, password);
 
-        res.render('addReviewer', { successMessage: 'User registered successfully!', errorMessage: null });
+        res.render('addReviewer', { successMessage: 'Reviewer registered successfully!', errorMessage: null });
       } catch (error) {
         let errorMessage;
 
