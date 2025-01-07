@@ -25,9 +25,15 @@
   <div class="content">
     <h2>Assign Reviewer</h2>
 
+    <% const year = new Date(articles[0].end_date).getFullYear(); %>
+
     <div id="reviewers">
       <p>Reviewers can get max 2 articles assigned to him or her.</p>
       <p>See list over the available reviewers in drop down menu </p>
+      <p id="SubmissionPeriod">
+        <%= articles && articles.length > 0 ? 'Current year for submission period: ' + year : 'No submission period available.' %>
+      </p>
+      
     </div>
 
     <% if (articles && articles.length > 0) { %>

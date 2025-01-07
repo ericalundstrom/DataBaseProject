@@ -83,8 +83,9 @@ async function getArticlesFunctionAndTrigger() {
                 LEFT JOIN
                     article_reviewers_table ON articles.article_id = article_reviewers_table.article_id
                 WHERE
-                    submissionperiods.end_date < CURRENT_DATE
-                    AND article_reviewers_table.article_id IS NULL;
+                    submissionperiods.year = extract(year from CURRENT_DATE)
+                    AND article_reviewers_table.article_id IS NULL
+                    AND submissionperiods.end_date < CURRENT_DATE;
             `;
             await client.query(createViewQuery);
         }
