@@ -60,8 +60,7 @@ class AuthorModel {
 
     try {
       const query = `
-        SELECT a.*, STRING_AGG(ar.comment, '\n') AS comment FROM articles a
-        JOIN Article_Reviewers_Table ar ON a.article_id = ar.article_id
+        SELECT a.* FROM articles a
         WHERE a.author_id = $1 AND a.year = $2
         GROUP BY a.article_id, a.submission_date, a.author_id, a.year
         ORDER BY a.submission_date DESC;
