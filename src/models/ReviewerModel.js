@@ -23,20 +23,18 @@ class ReviewerModel {
     }
   }
 
-  static async getUnreviewedArticlesForCurrentYear(reviewer_id) {
+  static async getUnreviewedArticles(reviewer_id) {
     const client = await connectDatabase();
 
     try {
-      const currentYear = new Date().getFullYear();
       const query = `
         SELECT a.* FROM articles a
         JOIN Article_Reviewers_Table ar ON a.article_id = ar.article_id
         WHERE ar.reviewer_id = $1
           AND ar.decision = 'under review'
-          AND EXTRACT(YEAR FROM a.submission_date) = $2
         ORDER BY a.submission_date DESC;
       `;
-      const values = [reviewer_id, currentYear];
+      const values = [reviewer_id];
 
       const result = await client.query(query, values);
 
