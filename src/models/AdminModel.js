@@ -108,7 +108,7 @@ class AdminModel {
         }
     }
 
-    static async getArticles() {
+    static async getArticlesToAssignReviewer() {
         const client = await connectDatabase();
         try {
 

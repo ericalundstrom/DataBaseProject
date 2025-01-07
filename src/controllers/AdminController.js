@@ -98,7 +98,7 @@ class AdminController {
     }
   }
 
-  static async getArticles (req,res){
+  static async getArticlesToAssignReviewer (req,res){
     try{
       const user = req.session.user;
 
@@ -106,7 +106,7 @@ class AdminController {
         throw new Error('unauthorized');
       }
 
-      const articles = await AdminModel.getArticles();
+      const articles = await AdminModel.getArticlesToAssignReviewer();
 
       return { articles };
     } catch (error) {
@@ -192,7 +192,7 @@ class AdminController {
   
       res.render('assignReviewer', {
         user,
-        articles: await AdminModel.getArticles(),  
+        articles: await AdminModel.getArticlesToAssignReviewer(),  
         reviewers: await AdminModel.getReviewers(), 
         successMessage: 'Reviewers assigned successfully.',
         errorMessage: null
@@ -216,7 +216,7 @@ class AdminController {
       };
       res.render('assignReviewer', {
         user,
-        articles: await AdminModel.getArticles(),  
+        articles: await AdminModel.getArticlesToAssignReviewer(),  
         reviewers: await AdminModel.getReviewers(),  
         successMessage: null,
         errorMessage

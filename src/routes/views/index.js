@@ -120,12 +120,10 @@ router.get('/admin/assign-reviewer', (req, res) => {
     return res.redirect('/login');
   }
 
-  AdminController.getArticles(req, res)
+  AdminController.getArticlesToAssignReviewer(req, res)
   .then(({ articles }) => {
-    // När artiklar hämtats, hämta reviewers
     AdminController.getReviewers(req, res)
       .then(({ reviewers }) => {
-        // Rendera vyn när både artiklar och reviewers har hämtats
         res.render('assignReviewer', {
           user,
           articles,
@@ -135,7 +133,6 @@ router.get('/admin/assign-reviewer', (req, res) => {
         });
       })
       .catch((reviewerError) => {
-        // Om ett fel inträffar vid hämtning av reviewers
         let errorMessage = 'Error fetching reviewers';
         if (reviewerError.message === 'unauthorized') {
           errorMessage = 'You must be logged in to access this page.';
@@ -143,15 +140,14 @@ router.get('/admin/assign-reviewer', (req, res) => {
 
         res.render('assignReviewer', {
           user,
-          articles, // Artiklar hämtades framgångsrikt, skickas med
-          reviewers: [], // Ingen reviewer-data att skicka
+          articles, 
+          reviewers: [], 
           successMessage: null,
           errorMessage
         });
       });
   })
   .catch((articleError) => {
-    // Om ett fel inträffar vid hämtning av artiklar
     let errorMessage = 'Error fetching articles';
     if (articleError.message === 'unauthorized') {
       errorMessage = 'You must be logged in to access this page.';
@@ -161,8 +157,8 @@ router.get('/admin/assign-reviewer', (req, res) => {
 
     res.render('assignReviewer', {
       user,
-      articles: [], // Ingen artikeldata att skicka
-      reviewers: [], // Ingen reviewer-data att skicka
+      articles: [], 
+      reviewers: [],
       successMessage: null,
       errorMessage
     });
