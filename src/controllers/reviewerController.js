@@ -45,7 +45,7 @@ class ReviewerController {
 
       const reviewer_id = user.user_id;
 
-      const articles = await ReviewerModel.getArticlesByReviewerForCurrentYear(reviewer_id);
+      const articles = await ReviewerModel.getArticlesByReviewer(reviewer_id);
 
       return articles;
     } catch (error) {
