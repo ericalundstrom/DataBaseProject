@@ -7,7 +7,6 @@ const router = express.Router();
 
 router.post('/create-submission', AdminController.createSubmission);
 router.get('/assign-reviewer', AdminController.getArticlesToAssignReviewer);
-router.get('/assign-reviewer', AdminController.getReviewers);
 router.post('/assign-reviewer', AdminController.assignReviewers);
 router.get('/all-articles', AdminController.getAllArticles);
 router.get('/remove-reviewer', AdminController.getAllReviewers);
