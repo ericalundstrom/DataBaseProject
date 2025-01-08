@@ -24,9 +24,13 @@ class ManageModel {
       const valuesOne = [newId, first_name, last_name, email, phone, affiliation, role, password];
       await client.query(queryOne, valuesOne);
 
-      const queryTwo = `Insert INTO reviewers_table (reviewer_id, research_area) VALUES ($1, $2)`;
-      const valuesTwo = [newId, affiliation];
-      await client.query(queryTwo, valuesTwo);
+      if (role == 'reviewer') {
+        
+        const queryTwo = `Insert INTO reviewers_table (reviewer_id, research_area) VALUES ($1, $2)`;
+        const valuesTwo = [newId, affiliation];
+        await client.query(queryTwo, valuesTwo);
+      }
+
 
       await client.query('COMMIT');
 
